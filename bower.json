@@ -1,0 +1,32 @@
+{
+  "name": "reactivis",
+  "version": "0.0.0",
+  "homepage": "https://github.com/curran/reactivis",
+  "authors": [
+    "curran <curran.kelleher@gmail.com>"
+  ],
+  "description": "Reusable Interactive D3 Data Visualizations.",
+  "main": "dist/reactivis.js",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "d3",
+    "visualization",
+    "data",
+    "charts",
+    "charting",
+    "interactive"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "model": "~0.0.4"
+  }
+}
