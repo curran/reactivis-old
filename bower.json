@@ -19,9 +19,9 @@
     "interactive"
   ],
   "license": "MIT",
-  "ignore": [
-  ],
+  "ignore": [],
   "devDependencies": {
-    "model": "~0.0.4"
+    "model": "~0.0.4",
+    "requirejs": "~2.1.11"
   }
 }
