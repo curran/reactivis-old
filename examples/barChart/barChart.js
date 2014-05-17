@@ -2,11 +2,18 @@
 // Curran Kelleher 5/16/2014
 define(['d3', 'model', 'reactivis'], function (d3, Model, reactivis) {
   return function BarChart(div){
-    var xScale = d3.scale.ordinal(),
-        yScale = d3.scale.linear(),
-        xAxis = d3.svg.axis().scale(xScale).orient('bottom'),
-        yAxis = d3.svg.axis().scale(yScale).orient('left').ticks(10, '%'),
-        model = Model();
+    var model = Model();
+
+    model.set('xScale', d3.scale.ordinal());
+    model.set('yScale', d3.scale.linear());
+
+    model.when('xScale', function (xScale) {
+      model.set('xAxis', d3.svg.axis().scale(xScale).orient('bottom'));
+    });
+
+    model.when('yScale', function (yScale) {
+      model.set('yAxis', d3.svg.axis().scale(yScale).orient('left').ticks(10, '%'));
+    });
 
     model.when('div', function (div) {
       model.set('svg', d3.select(div).append('svg'));
@@ -51,7 +58,7 @@ define(['d3', 'model', 'reactivis'], function (d3, Model, reactivis) {
       xAxisG.attr('transform', 'translate(0,' + height + ')');
     });
 
-    model.when(['g', 'xAxisG', 'yAxisG', 'width', 'height', 'data', 'barField', 'heightField'], function (g, xAxisG, yAxisG, width, height, data, barField, heightField) {
+    model.when(['g', 'xScale', 'yScale', 'xAxis', 'yAxis', 'xAxisG', 'yAxisG', 'width', 'height', 'data', 'barField', 'heightField'], function (g, xScale, yScale, xAxis, yAxis, xAxisG, yAxisG, width, height, data, barField, heightField) {
       var bars;
 
       xScale.domain(data.map(function(d) { return d[barField]; }));
