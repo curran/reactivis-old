@@ -44,8 +44,8 @@ define(['d3'], function(d3){
       });
 
       model.when(['xScale', 'width'], function (xScale, width) {
-        // TODO make the .1 a model property
-        xScale.rangeRoundBands([0, width], .1);
+        // TODO make the 0.1 a model property
+        xScale.rangeRoundBands([0, width], 0.1);
         model.set('xRange', xScale.range());
       });
     },
@@ -135,5 +135,5 @@ define(['d3'], function(d3){
       };
     });
     return reactivis;
-  }
+  };
 });

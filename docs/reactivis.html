@@ -30,11 +30,253 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>define([<span class="hljs-string">''</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
-  <span class="hljs-keyword">return</span> {
-    test: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-      <span class="hljs-keyword">return</span> <span class="hljs-string">'A'</span>;
+            <div class="content"><div class='highlight'><pre>define([<span class="hljs-string">'d3'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(d3)</span>{</span>
+  <span class="hljs-keyword">var</span> methods = {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>(div) -&gt; (svg, g)
+(svg, box) -&gt; svg DOM</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    svg: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
+
+      model.when(<span class="hljs-string">'div'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(div)</span> {</span>
+        <span class="hljs-keyword">var</span> svg = d3.select(div).append(<span class="hljs-string">'svg'</span>);
+        model.set(<span class="hljs-string">'svg'</span>, svg);
+        model.set(<span class="hljs-string">'g'</span>, svg.append(<span class="hljs-string">'g'</span>));
+      });
+
+      model.when([<span class="hljs-string">'svg'</span>, <span class="hljs-string">'box'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(svg, box)</span> {</span>
+        svg.attr(<span class="hljs-string">'width'</span>, box.width)
+           .attr(<span class="hljs-string">'height'</span>, box.height);
+      });
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>(box, margin) -&gt; (width, height)
+(g, margin) -&gt; g DOM transformation</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    margin: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
+
+      model.when([<span class="hljs-string">'box'</span>, <span class="hljs-string">'margin'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(box, margin)</span> {</span>
+        model.set(<span class="hljs-string">'width'</span>, box.width - margin.left - margin.right);
+        model.set(<span class="hljs-string">'height'</span>, box.height - margin.top - margin.bottom);
+      });
+
+      model.when([<span class="hljs-string">'g'</span>, <span class="hljs-string">'margin'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(g, margin)</span> {</span>
+        g.attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate('</span> + margin.left + <span class="hljs-string">','</span> + margin.top + <span class="hljs-string">')'</span>);
+      });
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>D3 Ordinal Scale -&gt; (xScale)
+(xScale, data, getX) -&gt; (xDomain)
+(xScale, width) -&gt; (xRange)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    xOrdinalScale: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
+
+      model.set(<span class="hljs-string">'xScale'</span>, d3.scale.ordinal());
+
+      model.when([<span class="hljs-string">'xScale'</span>, <span class="hljs-string">'data'</span>, <span class="hljs-string">'getX'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xScale, data, getX)</span> {</span>
+        xScale.domain(data.map(getX));
+        model.set(<span class="hljs-string">'xDomain'</span>, xScale.domain());
+      });
+
+      model.when([<span class="hljs-string">'xScale'</span>, <span class="hljs-string">'width'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xScale, width)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>TODO make the 0.1 a model property</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        xScale.rangeRoundBands([<span class="hljs-number">0</span>, width], <span class="hljs-number">0.1</span>);
+        model.set(<span class="hljs-string">'xRange'</span>, xScale.range());
+      });
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>(xScale) -&gt; (xAxis)
+(g) -&gt; (xAxisG)
+(xAxis, xAxisG, xDomain, xRange) -&gt; X Axis DOM
+(xAxisG, height) -&gt; X Axis DOM</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    xAxis: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
+
+      model.when(<span class="hljs-string">'xScale'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xScale)</span> {</span>
+        model.set(<span class="hljs-string">'xAxis'</span>, d3.svg.axis().scale(xScale).orient(<span class="hljs-string">'bottom'</span>));
+      });
+
+      model.when(<span class="hljs-string">'g'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(g)</span> {</span>
+        model.set(<span class="hljs-string">'xAxisG'</span>, g.append(<span class="hljs-string">'g'</span>).attr(<span class="hljs-string">'class'</span>, <span class="hljs-string">'x axis'</span>));
+      });
+
+      model.when([<span class="hljs-string">'xAxis'</span>, <span class="hljs-string">'xAxisG'</span>, <span class="hljs-string">'xDomain'</span>, <span class="hljs-string">'xRange'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xAxis, xAxisG)</span> {</span>
+        xAxisG.call(xAxis);
+      });
+
+      model.when([<span class="hljs-string">'xAxisG'</span>, <span class="hljs-string">'height'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xAxisG, height)</span> {</span>
+        xAxisG.attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate(0,'</span> + height + <span class="hljs-string">')'</span>);
+      });
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>D3 Linear Scale -&gt; (yScale)
+(yScale, data, getY) -&gt; (yDomain)
+(yScale, height) -&gt; (yRange)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    yLinearScale: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
+      model.set(<span class="hljs-string">'yScale'</span>, d3.scale.linear());
+
+      model.when([<span class="hljs-string">'yScale'</span>, <span class="hljs-string">'data'</span>, <span class="hljs-string">'getY'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yScale, data, getY)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>TODO make min, max configurable</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        yScale.domain([<span class="hljs-number">0</span>, d3.max(data, getY)]);
+        model.set(<span class="hljs-string">'yDomain'</span>, yScale.domain());
+      });
+
+      model.when([<span class="hljs-string">'yScale'</span>, <span class="hljs-string">'height'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yScale, height)</span> {</span>
+        yScale.range([height, <span class="hljs-number">0</span>]);
+        model.set(<span class="hljs-string">'yRange'</span>, yScale.range());
+      });
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>(yScale) -&gt; (yAxis)
+(g) -&gt; (yAxisG)
+(yAxis, yAxisG, yDomain, yRange) -&gt; Y Axis DOM</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    yAxis: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
+
+      model.when(<span class="hljs-string">'yScale'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yScale)</span> {</span>
+        model.set(<span class="hljs-string">'yAxis'</span>, d3.svg.axis().scale(yScale).orient(<span class="hljs-string">'left'</span>).ticks(<span class="hljs-number">10</span>, <span class="hljs-string">'%'</span>));
+      });
+
+      model.when(<span class="hljs-string">'g'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(g)</span> {</span>
+        model.set(<span class="hljs-string">'yAxisG'</span>, g.append(<span class="hljs-string">'g'</span>).attr(<span class="hljs-string">'class'</span>, <span class="hljs-string">'y axis'</span>));
+      });
+
+      model.when([<span class="hljs-string">'yAxis'</span>, <span class="hljs-string">'yAxisG'</span>, <span class="hljs-string">'yDomain'</span>, <span class="hljs-string">'yRange'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yAxis, yAxisG)</span> {</span>
+        yAxisG.call(yAxis);
+      });
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>(yAxisG) -&gt; (yAxisLabel)
+(yAxisLabel, yLabel) -&gt; Y Axis Label DOM text</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    yAxisLabel: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
+
+      model.when(<span class="hljs-string">'yAxisG'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yAxisG)</span> {</span>
+        model.set(<span class="hljs-string">'yAxisLabel'</span>, yAxisG.append(<span class="hljs-string">'text'</span>)
+          .attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'rotate(-90)'</span>)
+          .attr(<span class="hljs-string">'y'</span>, <span class="hljs-number">6</span>)
+          .attr(<span class="hljs-string">'dy'</span>, <span class="hljs-string">'.71em'</span>)
+          .style(<span class="hljs-string">'text-anchor'</span>, <span class="hljs-string">'end'</span>));
+      });
+
+      model.when([<span class="hljs-string">'yAxisLabel'</span>, <span class="hljs-string">'yLabel'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yAxisLabel, yLabel)</span> {</span>
+        yAxisLabel.text(yLabel);
+      });
     }
+  };
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
+    <span class="hljs-keyword">var</span> reactivis = {};
+    <span class="hljs-built_in">Object</span>.keys(methods).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method)</span> {</span>
+      reactivis[method] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        methods[method](model);
+        <span class="hljs-keyword">return</span> reactivis;
+      };
+    });
+    <span class="hljs-keyword">return</span> reactivis;
   };
 });</pre></div></div>
             
