@@ -1,19 +1,16 @@
-// The main program that runs the bar chart example.
-// This program creates a new bar chart, loads a
-// configuration file for it, and loads data into it.
-// Then it periodically updates various aspects of the chart
-// with random values, to illustrate that the chart
-// is dynamic and reacts to changes in its model.
-//
-// Curran Kelleher 4/17/2014
+// A bar chart using reactivis.
+// Curran Kelleher 5/17/2014
 require(['d3', 'barChart'], function (d3, BarChart) {
-  var div = document.getElementById('barChartContainer'),
-      barChart = BarChart();
+  var barChart = BarChart(),
+      div = document.getElementById('barChartContainer');
 
   barChart.set('div', div);
 
-  d3.json('configuration.json', function (config) {
-    barChart.set(config);
+  barChart.set('margin', { top: 20, right: 20, bottom: 30, left: 40 });
+  barChart.set({
+    getX: function (d) { return d.char; },
+    getY: function (d) { return d.freq; },
+    yLabel: "Frequency"
   });
 
   d3.tsv('data.tsv', function (d) {

@@ -58,23 +58,44 @@ define(['d3', 'model', 'reactivis'], function (d3, Model, reactivis) {
       xAxisG.attr('transform', 'translate(0,' + height + ')');
     });
 
-    model.when(['g', 'xScale', 'yScale', 'xAxis', 'yAxis', 'xAxisG', 'yAxisG', 'width', 'height', 'data', 'barField', 'heightField'], function (g, xScale, yScale, xAxis, yAxis, xAxisG, yAxisG, width, height, data, barField, heightField) {
-      var bars;
+    model.when(['yScale', 'data', 'getY'], function (yScale, data, getY) {
+      yScale.domain([0, d3.max(data, getY)]);
+      model.set('yDomain', yScale.domain());
+    });
 
-      xScale.domain(data.map(function(d) { return d[barField]; }));
-      yScale.domain([0, d3.max(data, function(d) { return d[heightField]; })]);
-      xScale.rangeRoundBands([0, width], .1);
+    model.when(['yScale', 'height'], function (yScale, height) {
       yScale.range([height, 0]);
+      model.set('yRange', yScale.range());
+    });
 
+    model.when(['xScale', 'data', 'getX'], function (xScale, data, getX) {
+      xScale.domain(data.map(getX));
+      model.set('xDomain', xScale.domain());
+    });
+
+    model.when(['xScale', 'width'], function (xScale, width) {
+      xScale.rangeRoundBands([0, width], .1);
+      model.set('xRange', xScale.range());
+    });
+
+    model.when(['xAxis', 'xAxisG', 'xDomain', 'xRange'], function (xAxis, xAxisG) {
       xAxisG.call(xAxis);
+    });
+
+    model.when(['yAxis', 'yAxisG', 'yDomain', 'yRange'], function (yAxis, yAxisG) {
       yAxisG.call(yAxis);
+    });
+
+    model.when(['g', 'xScale', 'yScale', 'xDomain', 'xRange', 'yDomain', 'yRange', 'data', 'getX', 'getY', 'height'], function (g, xScale, yScale, xDomain, xRange, yDomain, yRange, data, getX, getY, height) {
+      var bars;
 
       bars = g.selectAll('.bar').data(data);
       bars.enter().append('rect').attr('class', 'bar');
-      bars.attr('x', function(d) { return xScale(d[barField]); })
-          .attr('width', xScale.rangeBand())
-          .attr('y', function(d) { return yScale(d[heightField]); })
-          .attr('height', function(d) { return height - yScale(d[heightField]); });
+      bars
+        .attr('x', function(d) { return xScale(getX(d)); })
+        .attr('width', xScale.rangeBand())
+        .attr('y', function(d) { return yScale(getY(d)); })
+        .attr('height', function(d) { return height - yScale(getY(d)); });
       bars.exit().remove();
     });
     return model;
