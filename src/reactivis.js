@@ -31,6 +31,24 @@ define(['d3'], function(d3){
       });
     },
 
+    // D3 Linear Scale -> (xScale)
+    // (xScale, data, getX) -> (xDomain)
+    // (xScale, width) -> (xRange)
+    xLinearScale: function (model) {
+      model.set('xScale', d3.scale.linear());
+
+      model.when(['xScale', 'data', 'getX'], function (xScale, data, getX) {
+        // TODO make min, max configurable
+        xScale.domain([d3.min(data, getX), d3.max(data, getX)]);
+        model.set('xDomain', xScale.domain());
+      });
+
+      model.when(['xScale', 'width'], function (xScale, width) {
+        xScale.range([0, width]);
+        model.set('xRange', xScale.range());
+      });
+    },
+
     // D3 Ordinal Scale -> (xScale)
     // (xScale, data, getX) -> (xDomain)
     // (xScale, width) -> (xRange)
@@ -73,6 +91,26 @@ define(['d3'], function(d3){
       });
     },
 
+    // (xAxisG) -> (xAxisLabel)
+    // (xAxisLabel, xLabel) -> X Axis Label DOM text
+    xAxisLabel: function (model) {
+
+      model.when('xAxisG', function (xAxisG) {
+        model.set('xAxisLabel', xAxisG.append('text')
+          .attr('class', 'label')
+          .attr('y', -6)
+          .style('text-anchor', 'end'));
+      });
+
+      model.when(['xAxisLabel', 'xLabel'], function (xAxisLabel, xLabel) {
+        xAxisLabel.text(xLabel);
+      });
+
+      model.when(['xAxisLabel', 'width'], function (xAxisLabel, width) {
+        xAxisLabel.attr('x', width);
+      });
+    },
+
     // D3 Linear Scale -> (yScale)
     // (yScale, data, getY) -> (yDomain)
     // (yScale, height) -> (yRange)
@@ -81,7 +119,7 @@ define(['d3'], function(d3){
 
       model.when(['yScale', 'data', 'getY'], function (yScale, data, getY) {
         // TODO make min, max configurable
-        yScale.domain([0, d3.max(data, getY)]);
+        yScale.domain([d3.min(data, getY), d3.max(data, getY)]);
         model.set('yDomain', yScale.domain());
       });
 
@@ -97,7 +135,9 @@ define(['d3'], function(d3){
     yAxis: function (model) {
 
       model.when('yScale', function (yScale) {
-        model.set('yAxis', d3.svg.axis().scale(yScale).orient('left').ticks(10, '%'));
+        model.set('yAxis', d3.svg.axis().scale(yScale).orient('left'));
+
+        // TODO add .ticks(10, '%'));
       });
 
       model.when('g', function (g) {

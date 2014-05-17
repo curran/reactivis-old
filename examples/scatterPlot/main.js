@@ -1,20 +1,14 @@
-// The main program that runs the scatter plot.
-// This program creates a new visualization, loads a
-// configuration file for it, and loads data into it.
-// Then it periodically updates various aspects of the chart
-// with random values, to illustrate that the chart
-// is dynamic and reacts to changes in its model.
-//
-// Curran Kelleher 4/17/2014
 require(['d3', 'scatterPlot'], function (d3, ScatterPlot) {
   var div = document.getElementById('scatterPlotContainer'),
-      scatterPlot = ScatterPlot(div);
+      scatterPlot = ScatterPlot();
+
+  scatterPlot.set('div', div);
 
   scatterPlot.set({
-    "xField": "sepalWidth",
-    "yField": "sepalLength",
+    getX: function (d) { return d.sepalWidth; },
+    getY: function (d) { return d.sepalLength; },
     "xLabel": "Sepal Width (cm)",
-    "yLabel": "Sepal Width (cm)",
+    "yLabel": "Sepal Length (cm)",
     "margin": {
       "top": 20,
       "right": 20,
@@ -67,7 +61,7 @@ require(['d3', 'scatterPlot'], function (d3, ScatterPlot) {
   });
 
   function setSizeFromDiv(){
-    scatterPlot.set('size', {
+    scatterPlot.set('box', {
       width: div.clientWidth,
       height: div.clientHeight
     });
