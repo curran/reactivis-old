@@ -41,6 +41,13 @@ gulp.task('build', function() {
         location: '.'
       }
     ],
+    paths: {
+      // Exclude these modules from the build,
+      // they will be handled in the consuming code.
+      // See http://requirejs.org/docs/optimization.html#empty
+      model: 'empty:',
+      d3: 'empty:'
+    },
     name: moduleName,
     out: moduleName + '.js',
     baseUrl: 'src',
