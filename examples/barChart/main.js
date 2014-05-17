@@ -8,7 +8,9 @@
 // Curran Kelleher 4/17/2014
 require(['d3', 'barChart'], function (d3, BarChart) {
   var div = document.getElementById('barChartContainer'),
-      barChart = BarChart(div);
+      barChart = BarChart();
+
+  barChart.set('div', div);
 
   d3.json('configuration.json', function (config) {
     barChart.set(config);

@@ -2,56 +2,72 @@
 // Curran Kelleher 5/16/2014
 define(['d3', 'model', 'reactivis'], function (d3, Model, reactivis) {
   return function BarChart(div){
-    var x = d3.scale.ordinal(),
-        y = d3.scale.linear(),
-        xAxis = d3.svg.axis().scale(x).orient('bottom'),
-        yAxis = d3.svg.axis().scale(y).orient('left').ticks(10, '%'),
-        svg = d3.select(div).append('svg'),
-        g = svg.append('g'),
-        xAxisG = g.append('g').attr('class', 'x axis'),
-        yAxisG = g.append('g').attr('class', 'y axis'),
-        yAxisLabel = yAxisG.append('text')
-          .attr('transform', 'rotate(-90)')
-          .attr('y', 6)
-          .attr('dy', '.71em')
-          .style('text-anchor', 'end'),
+    var xScale = d3.scale.ordinal(),
+        yScale = d3.scale.linear(),
+        xAxis = d3.svg.axis().scale(xScale).orient('bottom'),
+        yAxis = d3.svg.axis().scale(yScale).orient('left').ticks(10, '%'),
         model = Model();
 
+    model.when('div', function (div) {
+      model.set('svg', d3.select(div).append('svg'));
+    });
 
-    model.when('yLabel', yAxisLabel.text, yAxisLabel);
+    model.when('svg', function (svg) {
+      model.set('g', svg.append('g'));
+    });
 
-    model.when('margin', function (margin) {
+    model.when('g', function (g) {
+      model.set('xAxisG', g.append('g').attr('class', 'x axis'));
+    });
+
+    model.when('g', function (g) {
+      model.set('yAxisG', g.append('g').attr('class', 'y axis'));
+    });
+
+    model.when('yAxisG', function (yAxisG) {
+      model.set('yAxisLabel', yAxisG.append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', 6)
+        .attr('dy', '.71em')
+        .style('text-anchor', 'end'));
+    });
+
+    model.when(['yAxisLabel', 'yLabel'], function (yAxisLabel, yLabel) {
+      yAxisLabel.text(yLabel);
+    });
+
+    model.when(['g', 'margin'], function (g, margin) {
       g.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
     });
 
     reactivis.margin(model);
     
-    model.when('box', function (box) {
+    model.when(['svg', 'box'], function (svg, box) {
       svg.attr('width', box.width)
          .attr('height', box.height);
     });
 
-    model.when('height', function (height) {
+    model.when(['xAxisG', 'height'], function (xAxisG, height) {
       xAxisG.attr('transform', 'translate(0,' + height + ')');
     });
 
-    model.when(['width', 'height', 'data', 'barField', 'heightField'], function (width, height, data, barField, heightField) {
+    model.when(['g', 'xAxisG', 'yAxisG', 'width', 'height', 'data', 'barField', 'heightField'], function (g, xAxisG, yAxisG, width, height, data, barField, heightField) {
       var bars;
 
-      x.domain(data.map(function(d) { return d[barField]; }));
-      y.domain([0, d3.max(data, function(d) { return d[heightField]; })]);
-      x.rangeRoundBands([0, width], .1);
-      y.range([height, 0]);
+      xScale.domain(data.map(function(d) { return d[barField]; }));
+      yScale.domain([0, d3.max(data, function(d) { return d[heightField]; })]);
+      xScale.rangeRoundBands([0, width], .1);
+      yScale.range([height, 0]);
 
       xAxisG.call(xAxis);
       yAxisG.call(yAxis);
 
       bars = g.selectAll('.bar').data(data);
       bars.enter().append('rect').attr('class', 'bar');
-      bars.attr('x', function(d) { return x(d[barField]); })
-          .attr('width', x.rangeBand())
-          .attr('y', function(d) { return y(d[heightField]); })
-          .attr('height', function(d) { return height - y(d[heightField]); });
+      bars.attr('x', function(d) { return xScale(d[barField]); })
+          .attr('width', xScale.rangeBand())
+          .attr('y', function(d) { return yScale(d[heightField]); })
+          .attr('height', function(d) { return height - yScale(d[heightField]); });
       bars.exit().remove();
     });
     return model;
