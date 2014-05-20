@@ -31,32 +31,36 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> requirejs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'requirejs'</span>),
+    jsdom = <span class="hljs-built_in">require</span>(<span class="hljs-string">'jsdom'</span>).jsdom,
+    d3 = <span class="hljs-built_in">require</span>(<span class="hljs-string">'d3'</span>),
     expect = <span class="hljs-built_in">require</span>(<span class="hljs-string">'chai'</span>).expect;
 
 requirejs.config({
-  baseUrl: <span class="hljs-string">'dist'</span>,
+  baseUrl: <span class="hljs-string">''</span>,
+  paths: {
+    reactivis: <span class="hljs-string">'dist/reactivis'</span>,
+    model: <span class="hljs-string">'bower_components/model/dist/model'</span>
+  },
   nodeRequire: <span class="hljs-built_in">require</span>
 });
 
 describe(<span class="hljs-string">'A suite'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
-  <span class="hljs-keyword">var</span> myModule = requirejs(<span class="hljs-string">'reactivis'</span>);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-2">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              <p>it(‘can access the AMD module’, function() {
- expect(myModule.test()).to.equal(‘A’);
-});</p>
+  <span class="hljs-keyword">var</span> reactivis = requirejs(<span class="hljs-string">'reactivis'</span>),
+      Model = requirejs(<span class="hljs-string">'model'</span>),
+      document = jsdom(<span class="hljs-string">'&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;div id="container"&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;'</span>);
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>});</pre></div></div>
+  it(<span class="hljs-string">'svg'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
+    <span class="hljs-keyword">var</span> model = Model(),
+        div = document.getElementById(<span class="hljs-string">'container'</span>);
+    reactivis(model).svg();
+    model.set(<span class="hljs-string">'div'</span>, div);
+    model.when([<span class="hljs-string">'svg'</span>, <span class="hljs-string">'g'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(svg, g)</span> {</span>
+      expect(svg.node().nodeName).to.equal(<span class="hljs-string">'SVG'</span>);
+      expect(g.node().nodeName).to.equal(<span class="hljs-string">'G'</span>);
+      done();
+    });
+  });
+});</pre></div></div>
             
         </li>
         

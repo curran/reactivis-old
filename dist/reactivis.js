@@ -1,9 +1,12 @@
 
 // Reusable reactive model data flow subgraphs
 // for constructung reactive data visualizations.
+//
+// Curran Kelleher 5/20/2014
 define('reactivis/reactivis',['d3'], function(d3){
   var methods = {
 
+    // ## svg
     // (div) -> (svg, g)
     // (svg, box) -> svg DOM
     svg: function (model) {
