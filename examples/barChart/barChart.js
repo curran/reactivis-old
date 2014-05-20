@@ -1,7 +1,8 @@
 // An example bar chart using reactivis.
 // Curran Kelleher 5/16/2014
 define(['d3', 'model', 'reactivis'], function (d3, Model, reactivis) {
-  return function BarChart(model){
+  return function BarChart(){
+    var model = Model();
 
     reactivis(model)
       .svg()
