@@ -1,3 +1,5 @@
+// Reusable reactive model data flow subgraphs
+// for constructung reactive data visualizations.
 define(['d3'], function(d3){
   var methods = {
 
