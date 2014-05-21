@@ -12,14 +12,44 @@ define(['d3', 'model'], function (d3, Model) {
           .charge(-200)
           .linkDistance(150)
           .gravity(0.03),
-        svg = d3.select(div).append('svg').style('position', 'absolute'),
+        zoom = d3.behavior.zoom()
+          .on('zoom', zoomed),
+        svg = d3.select(div)
+          .append('svg')
+          .style('position', 'absolute')
+          .call(zoom),
+
+        // g is used for panning and zooming
+        g = svg.append('g'),
 
         // These 3 groups exist for control of Z-ordering.
-        nodeG = svg.append('g'),
-        linkG = svg.append('g'),
-        arrowG = svg.append('g'),
+        nodeG = g.append('g'),
+        linkG = g.append('g'),
+        arrowG = g.append('g'),
+
+        // The size of nodes and arrows
         nodeSize = 20,
         arrowWidth = 8;
+    console.log(zoom.translate());
+    
+    model.when(['box', 'scale', 'translate'], function (box, scale, translate) {
+      zoom.scale(scale);
+      zoom.translate(translate);
+      zoom.event(svg);
+    });
+
+    // Transform the g element on panning and zooming.
+    function zoomed(){
+      g.attr('transform', 'translate(' + zoom.translate() + ')scale(' + zoom.scale() + ')');
+      console.log(d3.event.translate, d3.event.scale);
+    }
+
+    // Stop propagation of drag events here so that both
+    // dragging nodes and panning are possible.
+    // Draws from http://stackoverflow.com/questions/17953106/why-does-d3-js-v3-break-my-force-graph-when-implementing-zooming-when-v2-doesnt/17976205#17976205
+    force.drag().on('dragstart', function () {
+      d3.event.sourceEvent.stopPropagation();
+    });
     
     // Arrowhead setup.
     // Draws from Mobile Patent Suits example:
@@ -33,20 +63,16 @@ define(['d3', 'model'], function (d3, Model) {
         //.attr('viewBox', '0 -' + arrowWidth + ' 10 ' + (2 * arrowWidth))
         .attr('viewBox', '0 -5 10 10')
         // See also http://www.w3.org/TR/SVG/painting.html#MarkerElementRefXAttribute
-        // TODO generalize computation of refX
         .attr('refX', 10)
         .attr('refY', 0)
         .attr('markerWidth', 10)
         .attr('markerHeight', arrowWidth)
       .append('path')
-        //.attr('d', 'M0,-' + arrowWidth + 'L10,0L0,' + arrowWidth );
         .attr('d', 'M0,-5L10,0L0,5');
 
-    model.set({
-      color: d3.scale.ordinal()
-        .domain(['property', 'lambda'])
-        .range(['FFD1B5', 'white'])//d3.scale.category20(),
-    });
+    model.set('color', d3.scale.ordinal()
+      .domain(['property', 'lambda'])
+      .range(['FFD1B5', 'white']));
 
     model.when('box', function (box) {
       svg.attr('width', box.width).attr('height', box.height);
