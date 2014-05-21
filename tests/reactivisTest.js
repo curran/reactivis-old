@@ -114,4 +114,63 @@ describe('A suite', function() {
       }, 0);
     });
   });
+
+  it('xAxis', function(done) {
+    var model = Model();
+    
+    reactivis(model)
+      .svg()
+      .margin()
+      .xLinearScale();
+
+    model.set({
+      div: createDiv(),
+      box: { x: 50, y: 50, width: 200, height: 250 },
+      margin: { top: 10, right: 20, bottom: 30, left: 40 },
+      data: [ 3, 4, -1, 5 ],
+      getX: function (d) { return d; }
+    });
+
+    model.when(['xScale', 'g'], function () {
+      setTimeout(function () {
+        outputDataFlowGraph('xAxis', model);
+        reactivis(model).xAxis();
+        model.when(['xAxis', 'xAxisG'], function (xAxis, xAxisG) {
+          expect(xAxis.scale()).to.equal(model.get('xScale'));
+          expect(xAxisG.node().nodeName).to.equal('G');
+          done();
+        });
+      }, 0);
+    });
+  });
+
+  it('xAxisLabel', function(done) {
+    var model = Model();
+    
+    reactivis(model)
+      .svg()
+      .margin()
+      .xLinearScale()
+      .xAxis();
+
+    model.set({
+      div: createDiv(),
+      box: { x: 50, y: 50, width: 200, height: 250 },
+      margin: { top: 10, right: 20, bottom: 30, left: 40 },
+      data: [ 3, 4, -1, 5 ],
+      getX: function (d) { return d; }
+    });
+
+    model.when(['xAxis', 'xAxisG'], function (xAxis, xAxisG) {
+      setTimeout(function () {
+        outputDataFlowGraph('xAxisLabel', model);
+        reactivis(model).xAxisLabel();
+        model.set('xLabel', 'Population');
+        model.when('xAxisLabel', function (xAxisLabel) {
+          expect(xAxisLabel.text()).to.equal('Population');
+          done();
+        });
+      }, 0);
+    });
+  });
 });
