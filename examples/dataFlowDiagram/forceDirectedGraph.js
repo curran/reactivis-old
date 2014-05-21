@@ -4,22 +4,19 @@
 // Draws from http://bl.ocks.org/mbostock/4062045
 //
 // Curran Kelleher 4/30/2014
-// Updated 5/14/2014
+// Updated 5/14/2014, 5/20/2014
 define(['d3', 'model'], function (d3, Model) {
   return function (div){
     var model = Model(),
         force = d3.layout.force()
           .charge(-200)
-          .linkDistance(90)
+          .linkDistance(150)
           .gravity(0.03),
         svg = d3.select(div).append('svg').style('position', 'absolute'),
 
         // These 3 groups exist for control of Z-ordering.
-        // Links are on the bottom.
-        linkG = svg.append('g'),
-        // Nodes are on top of links.
         nodeG = svg.append('g'),
-        // Arrowheads are on top of nodes.
+        linkG = svg.append('g'),
         arrowG = svg.append('g'),
         nodeSize = 20,
         arrowWidth = 8;
@@ -37,14 +34,13 @@ define(['d3', 'model'], function (d3, Model) {
         .attr('viewBox', '0 -5 10 10')
         // See also http://www.w3.org/TR/SVG/painting.html#MarkerElementRefXAttribute
         // TODO generalize computation of refX
-        .attr('refX', 23)
+        .attr('refX', 10)
         .attr('refY', 0)
         .attr('markerWidth', 10)
         .attr('markerHeight', arrowWidth)
       .append('path')
         //.attr('d', 'M0,-' + arrowWidth + 'L10,0L0,' + arrowWidth );
         .attr('d', 'M0,-5L10,0L0,5');
-    
 
     model.set({
       color: d3.scale.ordinal()
@@ -100,32 +96,31 @@ define(['d3', 'model'], function (d3, Model) {
             return '0.3em';
           }
         })
-        .select(function (d) {
-          // Stash the svg text length in the data item
-          // for use in computing the rectangle width later.
-          d.textLength = this.getComputedTextLength();
+        .each(function (d) {
+          var circleWidth = nodeSize * 2,
+              textLength = this.getComputedTextLength(),
+              textWidth = textLength + nodeSize;
+
+          if(circleWidth > textWidth) {
+            d.isCircle = true;
+            d.rectX = -nodeSize;
+            d.rectWidth = circleWidth;
+          } else {
+            d.isCircle = false;
+            d.rectX = -(textLength + nodeSize) / 2;
+            d.rectWidth = textWidth;
+            d.textLength = textLength;
+          }
         });
 
       node.select('g rect')
         .style('fill', function(d) { return color(d.type); })
-        .attr('x', function(d) {
-          if(d.type === 'lambda'){
-            return -nodeSize;
-          } else {
-            return -(d.textLength + nodeSize) / 2;
-          }
-        })
-        .attr('width', function(d) {
-          if(d.type === 'lambda'){
-            return nodeSize * 2;
-          } else {
-            return d.textLength + nodeSize;
-          }
-        });
+        .attr('x', function(d) { return d.rectX; })
+        .attr('width', function(d) { return d.rectWidth; });
       node.exit().remove();
-//      node.select('title').text(function(d) { return d.name; });
 
       force.on('tick', function(e) {
+
         // Execute left-right constraints
         var k = 1 * e.alpha;
         force.links().forEach(function (link) {
@@ -138,7 +133,14 @@ define(['d3', 'model'], function (d3, Model) {
           a.x += k * (x - d / 2 - a.x);
           b.x += k * (x + d / 2 - b.x);
         });
-
+        force.nodes().forEach(function (d) {
+          if(d.isCircle){
+            d.leftX = d.rightX = d.x;
+          } else {
+            d.leftX =  d.x - d.textLength / 2 + nodeSize / 2;
+            d.rightX = d.x + d.textLength / 2 - nodeSize / 2;
+          }
+        });
 
         link.call(edge);
         arrow.call(edge);
@@ -151,21 +153,37 @@ define(['d3', 'model'], function (d3, Model) {
 
     // Sets the (x1, y1, x2, y2) line properties for graph edges.
     function edge(selection){
-
-      // TODO compute correct arrowhead position:
-      //   if(lambda)
-      //     use circle
-      //   else
-      //     use text length to compute box
-      //     if inside box
-      //       use box
-      //     else
-      //       use circle on the end of the box
       selection
-        .attr('x1', function(d) { return d.source.x; })
-        .attr('y1', function(d) { return d.source.y; })
-        .attr('x2', function(d) { return d.target.x; })
-        .attr('y2', function(d) { return d.target.y; });
+        .each(function (d) {
+          var sourceX, targetX, dy, dy, angle;
+
+          if( d.source.rightX < d.target.leftX ){
+            sourceX = d.source.rightX;
+            targetX = d.target.leftX;
+          } else if( d.target.rightX < d.source.leftX ){
+            targetX = d.target.rightX;
+            sourceX = d.source.leftX;
+          } else if (d.target.isCircle) {
+            targetX = sourceX = d.target.x;
+          } else if (d.source.isCircle) {
+            targetX = sourceX = d.source.x;
+          } else {
+            targetX = sourceX = (d.source.x + d.target.x) / 2;
+          }
+
+          dx = targetX - sourceX;
+          dy = d.target.y - d.source.y;
+          angle = Math.atan2(dx, dy);
+
+          d.sourceX = sourceX + Math.sin(angle) * nodeSize;
+          d.targetX = targetX - Math.sin(angle) * nodeSize;
+          d.sourceY = d.source.y + Math.cos(angle) * nodeSize;
+          d.targetY = d.target.y - Math.cos(angle) * nodeSize;
+        })
+        .attr('x1', function(d) { return d.sourceX; })
+        .attr('y1', function(d) { return d.sourceY; })
+        .attr('x2', function(d) { return d.targetX; })
+        .attr('y2', function(d) { return d.targetY; });
     }
 
     return model;
