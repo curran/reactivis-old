@@ -6,18 +6,13 @@
     },
     {
       "type": "property",
-      "name": "div",
+      "name": "xAxisG",
       "index": 1
     },
     {
       "type": "property",
-      "name": "svg",
+      "name": "xAxisLabel",
       "index": 2
-    },
-    {
-      "type": "property",
-      "name": "g",
-      "index": 3
     }
   ],
   "links": [
@@ -28,10 +23,6 @@
     {
       "source": 0,
       "target": 2
-    },
-    {
-      "source": 0,
-      "target": 3
     }
   ]
 }

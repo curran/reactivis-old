@@ -23,10 +23,6 @@
       "type": "property",
       "name": "height",
       "index": 4
-    },
-    {
-      "type": "lambda",
-      "index": 5
     }
   ],
   "links": [
@@ -45,14 +41,6 @@
     {
       "source": 0,
       "target": 4
-    },
-    {
-      "source": 3,
-      "target": 5
-    },
-    {
-      "source": 4,
-      "target": 5
     }
   ]
 }
