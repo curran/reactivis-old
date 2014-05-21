@@ -237,6 +237,106 @@ describe(<span class="hljs-string">'A suite'</span>, <span class="hljs-function"
         });
       }, <span class="hljs-number">0</span>);
     });
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>test(‘yOrdinalScale’, function (model, done) {
+ model.set({
+   data: [ ‘A’, ‘B’, ‘C’ ],
+   getY: function (d) { return d; }
+ });
+ model.when(‘yDomain’, function (yDomain) {
+   expect(yDomain[0]).to.equal(‘A’);
+   expect(yDomain[2]).to.equal(‘C’);</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>   setTimeout(function () {
+     model.set(‘width’, 500);
+     model.when(‘yRange’, function (yRange) {
+       expect(yRange[2]).to.equal(339);
+       done();
+     });
+   }, 0);
+ });
+});</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  it(<span class="hljs-string">'yAxis'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
+    <span class="hljs-keyword">var</span> model = Model();
+    
+    reactivis(model)
+      .svg()
+      .margin()
+      .yLinearScale();
+
+    model.set({
+      div: createDiv(),
+      box: { x: <span class="hljs-number">50</span>, y: <span class="hljs-number">50</span>, width: <span class="hljs-number">200</span>, height: <span class="hljs-number">250</span> },
+      margin: { top: <span class="hljs-number">10</span>, right: <span class="hljs-number">20</span>, bottom: <span class="hljs-number">30</span>, left: <span class="hljs-number">40</span> },
+      data: [ <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, -<span class="hljs-number">1</span>, <span class="hljs-number">5</span> ],
+      getY: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d; }
+    });
+
+    model.when([<span class="hljs-string">'yScale'</span>, <span class="hljs-string">'g'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+      setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        outputDataFlowGraph(<span class="hljs-string">'yAxis'</span>, model);
+        reactivis(model).yAxis();
+        model.when([<span class="hljs-string">'yAxis'</span>, <span class="hljs-string">'yAxisG'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yAxis, yAxisG)</span> {</span>
+          expect(yAxis.scale()).to.equal(model.get(<span class="hljs-string">'yScale'</span>));
+          expect(yAxisG.node().nodeName).to.equal(<span class="hljs-string">'G'</span>);
+          done();
+        });
+      }, <span class="hljs-number">0</span>);
+    });
+  });
+  it(<span class="hljs-string">'yAxisLabel'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
+    <span class="hljs-keyword">var</span> model = Model();
+    
+    reactivis(model)
+      .svg()
+      .margin()
+      .yLinearScale()
+      .yAxis();
+
+    model.set({
+      div: createDiv(),
+      box: { x: <span class="hljs-number">50</span>, y: <span class="hljs-number">50</span>, width: <span class="hljs-number">200</span>, height: <span class="hljs-number">250</span> },
+      margin: { top: <span class="hljs-number">10</span>, right: <span class="hljs-number">20</span>, bottom: <span class="hljs-number">30</span>, left: <span class="hljs-number">40</span> },
+      data: [ <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, -<span class="hljs-number">1</span>, <span class="hljs-number">5</span> ],
+      getY: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d; }
+    });
+
+    model.when([<span class="hljs-string">'yAxis'</span>, <span class="hljs-string">'yAxisG'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yAxis, yAxisG)</span> {</span>
+      setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        outputDataFlowGraph(<span class="hljs-string">'yAxisLabel'</span>, model);
+        reactivis(model).yAxisLabel();
+        model.set(<span class="hljs-string">'yLabel'</span>, <span class="hljs-string">'Population'</span>);
+        model.when(<span class="hljs-string">'yAxisLabel'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yAxisLabel)</span> {</span>
+          expect(yAxisLabel.text()).to.equal(<span class="hljs-string">'Population'</span>);
+          done();
+        });
+      }, <span class="hljs-number">0</span>);
+    });
   });
 });</pre></div></div>
             

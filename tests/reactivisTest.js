@@ -193,4 +193,81 @@ describe('A suite', function() {
       }, 0);
     });
   });
+
+  //test('yOrdinalScale', function (model, done) {
+  //  model.set({
+  //    data: [ 'A', 'B', 'C' ],
+  //    getY: function (d) { return d; }
+  //  });
+  //  model.when('yDomain', function (yDomain) {
+  //    expect(yDomain[0]).to.equal('A');
+  //    expect(yDomain[2]).to.equal('C');
+
+  //    setTimeout(function () {
+  //      model.set('width', 500);
+  //      model.when('yRange', function (yRange) {
+  //        expect(yRange[2]).to.equal(339);
+  //        done();
+  //      });
+  //    }, 0);
+  //  });
+  //});
+
+  it('yAxis', function(done) {
+    var model = Model();
+    
+    reactivis(model)
+      .svg()
+      .margin()
+      .yLinearScale();
+
+    model.set({
+      div: createDiv(),
+      box: { x: 50, y: 50, width: 200, height: 250 },
+      margin: { top: 10, right: 20, bottom: 30, left: 40 },
+      data: [ 3, 4, -1, 5 ],
+      getY: function (d) { return d; }
+    });
+
+    model.when(['yScale', 'g'], function () {
+      setTimeout(function () {
+        outputDataFlowGraph('yAxis', model);
+        reactivis(model).yAxis();
+        model.when(['yAxis', 'yAxisG'], function (yAxis, yAxisG) {
+          expect(yAxis.scale()).to.equal(model.get('yScale'));
+          expect(yAxisG.node().nodeName).to.equal('G');
+          done();
+        });
+      }, 0);
+    });
+  });
+  it('yAxisLabel', function(done) {
+    var model = Model();
+    
+    reactivis(model)
+      .svg()
+      .margin()
+      .yLinearScale()
+      .yAxis();
+
+    model.set({
+      div: createDiv(),
+      box: { x: 50, y: 50, width: 200, height: 250 },
+      margin: { top: 10, right: 20, bottom: 30, left: 40 },
+      data: [ 3, 4, -1, 5 ],
+      getY: function (d) { return d; }
+    });
+
+    model.when(['yAxis', 'yAxisG'], function (yAxis, yAxisG) {
+      setTimeout(function () {
+        outputDataFlowGraph('yAxisLabel', model);
+        reactivis(model).yAxisLabel();
+        model.set('yLabel', 'Population');
+        model.when('yAxisLabel', function (yAxisLabel) {
+          expect(yAxisLabel.text()).to.equal('Population');
+          done();
+        });
+      }, 0);
+    });
+  });
 });

@@ -162,9 +162,13 @@ define('reactivis/reactivis',['d3'], function(d3){
       });
     },
 
-    // (yScale) -> (yAxis)
-    // (g) -> (yAxisG)
-    // (yAxis, yAxisG, yDomain, yRange) -> Y Axis DOM
+    // ## yAxis
+    //
+    //  * (yScale) -> (yAxis)
+    //  * (g) -> (yAxisG)
+    //  * (yAxis, yAxisG, yDomain, yRange) -> Y Axis DOM
+    //
+    //<iframe src="../examples/dataFlowDiagram/#yAxis" width="450" height="200" frameBorder="0"></iframe>
     yAxis: function (model) {
 
       model.when('yScale', function (yScale) {
@@ -182,8 +186,12 @@ define('reactivis/reactivis',['d3'], function(d3){
       });
     },
 
-    // (yAxisG) -> (yAxisLabel)
-    // (yAxisLabel, yLabel) -> Y Axis Label DOM text
+    // ## yAxisLabel
+    //
+    //  * (yAxisG) -> (yAxisLabel)
+    //  * (yAxisLabel, yLabel) -> Y Axis Label DOM text
+    //
+    //<iframe src="../examples/dataFlowDiagram/#yAxisLabel" width="450" height="200" frameBorder="0"></iframe>
     yAxisLabel: function (model) {
 
       model.when('yAxisG', function (yAxisG) {
