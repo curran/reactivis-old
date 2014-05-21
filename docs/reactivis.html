@@ -46,8 +46,11 @@ for constructung reactive data visualizations.</p>
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
               <h2 id="svg">svg</h2>
-<p>(div) -&gt; (svg, g)
-(svg, box) -&gt; svg DOM</p>
+<ul>
+<li>(div) -&gt; (svg, g)</li>
+<li>(svg, box) -&gt; svg DOM</li>
+</ul>
+<iframe src="../examples/dataFlowDiagram/#svg" width="450" height="200" frameBorder="0"></iframe>
 
             </div>
             
@@ -74,8 +77,12 @@ for constructung reactive data visualizations.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>(box, margin) -&gt; (width, height)
-(g, margin) -&gt; g DOM transformation</p>
+              <h2 id="margin">margin</h2>
+<ul>
+<li>(box, margin) -&gt; (width, height)</li>
+<li>(g, margin) -&gt; g DOM transformation</li>
+</ul>
+<iframe src="../examples/dataFlowDiagram/#margin" width="450" height="200" frameBorder="0"></iframe>
 
             </div>
             
@@ -100,9 +107,13 @@ for constructung reactive data visualizations.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>D3 Linear Scale -&gt; (xScale)
-(xScale, data, getX) -&gt; (xDomain)
-(xScale, width) -&gt; (xRange)</p>
+              <h2 id="xlinearscale">xLinearScale</h2>
+<ul>
+<li>D3 Linear Scale -&gt; (xScale)</li>
+<li>(xScale, data, getX) -&gt; (xDomain)</li>
+<li>(xScale, width) -&gt; (xRange)</li>
+</ul>
+<iframe src="../examples/dataFlowDiagram/#xLinearScale" width="450" height="200" frameBorder="0"></iframe>
 
             </div>
             
@@ -143,9 +154,13 @@ for constructung reactive data visualizations.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>D3 Ordinal Scale -&gt; (xScale)
-(xScale, data, getX) -&gt; (xDomain)
-(xScale, width) -&gt; (xRange)</p>
+              <h2 id="xordinalscale">xOrdinalScale</h2>
+<ul>
+<li>D3 Ordinal Scale -&gt; (xScale)</li>
+<li>(xScale, data, getX) -&gt; (xDomain)</li>
+<li>(xScale, width) -&gt; (xRange)</li>
+</ul>
+<iframe src="../examples/dataFlowDiagram/#xOrdinalScale" width="450" height="200" frameBorder="0"></iframe>
 
             </div>
             
@@ -187,10 +202,14 @@ for constructung reactive data visualizations.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>(xScale) -&gt; (xAxis)
-(g) -&gt; (xAxisG)
-(xAxis, xAxisG, xDomain, xRange) -&gt; X Axis DOM
-(xAxisG, height) -&gt; X Axis DOM</p>
+              <h2 id="xaxis">xAxis</h2>
+<ul>
+<li>(xScale) -&gt; (xAxis)</li>
+<li>(g) -&gt; (xAxisG)</li>
+<li>(xAxis, xAxisG, xDomain, xRange) -&gt; X Axis DOM</li>
+<li>(xAxisG, height) -&gt; X Axis DOM</li>
+</ul>
+<iframe src="../examples/dataFlowDiagram/#xAxis" width="450" height="200" frameBorder="0"></iframe>
 
             </div>
             
@@ -222,8 +241,12 @@ for constructung reactive data visualizations.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>(xAxisG) -&gt; (xAxisLabel)
-(xAxisLabel, xLabel) -&gt; X Axis Label DOM text</p>
+              <h2 id="xaxislabel">xAxisLabel</h2>
+<ul>
+<li>(xAxisG) -&gt; (xAxisLabel)</li>
+<li>(xAxisLabel, xLabel) -&gt; X Axis Label DOM text</li>
+</ul>
+<iframe src="../examples/dataFlowDiagram/#xAxisLabel" width="450" height="200" frameBorder="0"></iframe>
 
             </div>
             
@@ -254,9 +277,13 @@ for constructung reactive data visualizations.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>D3 Linear Scale -&gt; (yScale)
-(yScale, data, getY) -&gt; (yDomain)
-(yScale, height) -&gt; (yRange)</p>
+              <h2 id="ylinearscale">yLinearScale</h2>
+<ul>
+<li>D3 Linear Scale -&gt; (yScale)</li>
+<li>(yScale, data, getY) -&gt; (yDomain)</li>
+<li>(yScale, height) -&gt; (yRange)</li>
+</ul>
+<iframe src="../examples/dataFlowDiagram/#yLinearScale" width="450" height="200" frameBorder="0"></iframe>
 
             </div>
             

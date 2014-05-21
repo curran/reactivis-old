@@ -139,9 +139,13 @@ define(['d3'], function(d3){
       });
     },
 
-    // D3 Linear Scale -> (yScale)
-    // (yScale, data, getY) -> (yDomain)
-    // (yScale, height) -> (yRange)
+    // ## yLinearScale
+    //
+    //  * D3 Linear Scale -> (yScale)
+    //  * (yScale, data, getY) -> (yDomain)
+    //  * (yScale, height) -> (yRange)
+    //
+    //<iframe src="../examples/dataFlowDiagram/#yLinearScale" width="450" height="200" frameBorder="0"></iframe>
     yLinearScale: function (model) {
       model.set('yScale', d3.scale.linear());
 
