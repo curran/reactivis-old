@@ -6,8 +6,11 @@ define(['d3'], function(d3){
   var methods = {
 
     // ## svg
-    // (div) -> (svg, g)
-    // (svg, box) -> svg DOM
+    //
+    //  * (div) -> (svg, g)
+    //  * (svg, box) -> svg DOM
+    //
+    //<iframe src="../examples/dataFlowDiagram/#svg" width="450" height="200" frameBorder="0"></iframe>
     svg: function (model) {
 
       model.when('div', function (div) {
@@ -22,8 +25,12 @@ define(['d3'], function(d3){
       });
     },
 
-    // (box, margin) -> (width, height)
-    // (g, margin) -> g DOM transformation
+    // ## margin
+    // 
+    //  * (box, margin) -> (width, height)
+    //  * (g, margin) -> g DOM transformation
+    //
+    //<iframe src="../examples/dataFlowDiagram/#margin" width="450" height="200" frameBorder="0"></iframe>
     margin: function (model) {
 
       model.when(['box', 'margin'], function (box, margin) {
@@ -36,9 +43,13 @@ define(['d3'], function(d3){
       });
     },
 
-    // D3 Linear Scale -> (xScale)
-    // (xScale, data, getX) -> (xDomain)
-    // (xScale, width) -> (xRange)
+    // ## xLinearScale
+    //
+    //  * D3 Linear Scale -> (xScale)
+    //  * (xScale, data, getX) -> (xDomain)
+    //  * (xScale, width) -> (xRange)
+    //
+    //<iframe src="../examples/dataFlowDiagram/#xLinearScale" width="450" height="200" frameBorder="0"></iframe>
     xLinearScale: function (model) {
       model.set('xScale', d3.scale.linear());
 
@@ -54,9 +65,13 @@ define(['d3'], function(d3){
       });
     },
 
-    // D3 Ordinal Scale -> (xScale)
-    // (xScale, data, getX) -> (xDomain)
-    // (xScale, width) -> (xRange)
+    // ## xOrdinalScale
+    //
+    //  * D3 Ordinal Scale -> (xScale)
+    //  * (xScale, data, getX) -> (xDomain)
+    //  * (xScale, width) -> (xRange)
+    //
+    //<iframe src="../examples/dataFlowDiagram/#xOrdinalScale" width="450" height="200" frameBorder="0"></iframe>
     xOrdinalScale: function (model) {
 
       model.set('xScale', d3.scale.ordinal());
@@ -73,10 +88,14 @@ define(['d3'], function(d3){
       });
     },
 
-    // (xScale) -> (xAxis)
-    // (g) -> (xAxisG)
-    // (xAxis, xAxisG, xDomain, xRange) -> X Axis DOM
-    // (xAxisG, height) -> X Axis DOM
+    // ## xAxis
+    //
+    //  * (xScale) -> (xAxis)
+    //  * (g) -> (xAxisG)
+    //  * (xAxis, xAxisG, xDomain, xRange) -> X Axis DOM
+    //  * (xAxisG, height) -> X Axis DOM
+    //
+    //<iframe src="../examples/dataFlowDiagram/#xAxis" width="450" height="200" frameBorder="0"></iframe>
     xAxis: function (model) {
 
       model.when('xScale', function (xScale) {
@@ -95,9 +114,13 @@ define(['d3'], function(d3){
         xAxisG.attr('transform', 'translate(0,' + height + ')');
       });
     },
-
-    // (xAxisG) -> (xAxisLabel)
-    // (xAxisLabel, xLabel) -> X Axis Label DOM text
+ 
+    // ## xAxisLabel
+    //
+    //  * (xAxisG) -> (xAxisLabel)
+    //  * (xAxisLabel, xLabel) -> X Axis Label DOM text
+    //
+    //<iframe src="../examples/dataFlowDiagram/#xAxisLabel" width="450" height="200" frameBorder="0"></iframe>
     xAxisLabel: function (model) {
 
       model.when('xAxisG', function (xAxisG) {
