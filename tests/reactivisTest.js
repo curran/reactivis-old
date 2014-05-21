@@ -62,8 +62,8 @@ describe('A suite', function() {
         }, 0);
       }, 0);
     });
-
   });
+
   test('margin', function (model, done) {
     model.set({
       box: { x: 50, y: 50, width: 200, height: 250 },
@@ -168,6 +168,26 @@ describe('A suite', function() {
         model.set('xLabel', 'Population');
         model.when('xAxisLabel', function (xAxisLabel) {
           expect(xAxisLabel.text()).to.equal('Population');
+          done();
+        });
+      }, 0);
+    });
+  });
+
+  test('yLinearScale', function (model, done) {
+    model.set({
+      data: [ 3, 4, -1, 5 ],
+      getY: function (d) { return d; }
+    });
+    model.when('yDomain', function (yDomain) {
+      expect(yDomain[0]).to.equal(-1);
+      expect(yDomain[1]).to.equal(5);
+
+      setTimeout(function () {
+        model.set('height', 500);
+        model.when('yRange', function (yRange) {
+          expect(yRange[0]).to.equal(500);
+          expect(yRange[1]).to.equal(0);
           done();
         });
       }, 0);
