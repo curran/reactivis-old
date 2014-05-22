@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/curran/reactivis",
   "devDependencies": {
+    "body-parser": "^1.2.0",
     "chai": "^1.9.1",
     "d3": "^3.4.8",
     "express": "^4.0.0",

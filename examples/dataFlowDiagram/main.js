@@ -14,14 +14,44 @@ require(['d3', 'forceDirectedGraph'], function (d3, ForceDirectedGraph) {
         } else {
           return 'svg';
         }
-      }());
+      }()),
+      filename = '../../dataFlowGraphs/' + name + '.json';
 
   // Load the data flow graph file.
-  d3.json('../../dataFlowGraphs/' + name + '.json', function (data) {
+  d3.json(filename, function (data) {
 
     // Set the data on the graph visualization.
     forceDirectedGraph.set('data', data);
+
+    // Whenever the user manually positions nodes,
+    forceDirectedGraph.when('data', function (data) {
+      sendToServer({
+        name: name,
+    // Restore indices so the data can be parsed properly later.
+        data: {
+          nodes: data.nodes,
+          links: data.links.map(function (d) {
+            return {
+              source: d.source.index,
+              target: d.target.index
+            };
+          }),
+
+        }
+      }); 
+    });
+    // write the new positions to disk via the server.
   });
+
+  function sendToServer(json){
+
+    // Draws from http://stackoverflow.com/questions/6418220/javascript-send-json-object-with-ajax
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', '/writeDataFlowGraph');
+    xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    xmlhttp.send(JSON.stringify(json));
+  }
+
 
   function initializeZoom(){
     var scale = div.clientWidth * 1 / 800;
