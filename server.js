@@ -21,12 +21,17 @@ app.post('/writeDataFlowGraph', function(req, res) {
       data = req.body.data,
       json = JSON.stringify(data, null, 2),
       filename = './dataFlowGraphs/' + name + '.json';
-  //console.log(json);
+
+  // Close the connection.
+  res.send('');
+
+  // Write the file to disk.
   fs.writeFile(filename, json, function(err) {
     if(err) {
       console.log(err);
     } else {
-      console.log('The file was saved!');
+      console.log('The file ' + filename + ' was saved!');
+//      console.log(json);
     }
   }); 
 });

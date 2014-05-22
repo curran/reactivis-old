@@ -25,22 +25,22 @@ require(['d3', 'forceDirectedGraph'], function (d3, ForceDirectedGraph) {
 
     // Whenever the user manually positions nodes,
     forceDirectedGraph.when('data', function (data) {
+
+      // write the new positions to disk via the server.
       sendToServer({
         name: name,
-    // Restore indices so the data can be parsed properly later.
         data: {
           nodes: data.nodes,
+          // Restore indices so the data can be parsed properly later.
           links: data.links.map(function (d) {
             return {
               source: d.source.index,
               target: d.target.index
             };
-          }),
-
+          })
         }
       }); 
     });
-    // write the new positions to disk via the server.
   });
 
   function sendToServer(json){

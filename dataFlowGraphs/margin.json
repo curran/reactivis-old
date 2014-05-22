@@ -2,27 +2,86 @@
   "nodes": [
     {
       "type": "lambda",
-      "index": 0
+      "index": 0,
+      "weight": 4,
+      "x": 229.4719232119811,
+      "y": 100.66634921231613,
+      "px": 229.52326207686627,
+      "py": 100.66634921231613,
+      "isCircle": true,
+      "rectX": -20,
+      "rectWidth": 40,
+      "rightX": 229.4719232119811,
+      "leftX": 229.4719232119811,
+      "fixed": true
     },
     {
       "type": "property",
       "name": "box",
-      "index": 1
+      "index": 1,
+      "weight": 1,
+      "x": 94.20047722183696,
+      "y": 148.64924912585084,
+      "px": 94.61027520899033,
+      "py": 148.64924912585084,
+      "isCircle": false,
+      "rectX": -34,
+      "rectWidth": 68,
+      "textLength": 48,
+      "leftX": 80.20047722183696,
+      "rightX": 108.20047722183696,
+      "fixed": true
     },
     {
       "type": "property",
       "name": "margin",
-      "index": 2
+      "index": 2,
+      "weight": 1,
+      "x": 94.22399067872738,
+      "y": 52.29713908313349,
+      "px": 94.63911584503211,
+      "py": 52.29713908313349,
+      "isCircle": false,
+      "rectX": -55.333335876464844,
+      "rectWidth": 110.66667175292969,
+      "textLength": 90.66667175292969,
+      "leftX": 58.89065480226253,
+      "rightX": 129.55732655519222,
+      "fixed": true
     },
     {
       "type": "property",
       "name": "width",
-      "index": 3
+      "index": 3,
+      "weight": 1,
+      "x": 364.5156641369644,
+      "y": 149.96210355601036,
+      "px": 364.0802469686148,
+      "py": 149.96210355601036,
+      "isCircle": false,
+      "rectX": -46.44444274902344,
+      "rectWidth": 92.88888549804688,
+      "textLength": 72.88888549804688,
+      "leftX": 338.07122138794097,
+      "rightX": 390.96010688598784,
+      "fixed": true
     },
     {
       "type": "property",
       "name": "height",
-      "index": 4
+      "index": 4,
+      "weight": 1,
+      "x": 364.4916439128235,
+      "y": 50.98163307037385,
+      "px": 364.05079906282987,
+      "py": 50.98163307037385,
+      "isCircle": false,
+      "rectX": -50,
+      "rectWidth": 100,
+      "textLength": 80,
+      "leftX": 334.4916439128235,
+      "rightX": 394.4916439128235,
+      "fixed": true
     }
   ],
   "links": [
