@@ -164,17 +164,19 @@ define(['d3', 'model'], function (d3, Model) {
               dy = b.y - a.y,
               d = Math.sqrt(dx * dx + dy * dy),
               x = (a.x + b.x) / 2;
-          a.x += k * (x - d / 2 - a.x);
-          b.x += k * (x + d / 2 - b.x);
+          if(!a.fixed){
+            a.x += k * (x - d / 2 - a.x);
+          }
+          if(!b.fixed){
+            b.x += k * (x + d / 2 - b.x);
+          }
         });
         force.nodes().forEach(function (d) {
-          if(!d.fixed){
-            if(d.isCircle){
-              d.leftX = d.rightX = d.x;
-            } else {
-              d.leftX =  d.x - d.textLength / 2 + nodeSize / 2;
-              d.rightX = d.x + d.textLength / 2 - nodeSize / 2;
-            }
+          if(d.isCircle){
+            d.leftX = d.rightX = d.x;
+          } else {
+            d.leftX =  d.x - d.textLength / 2 + nodeSize / 2;
+            d.rightX = d.x + d.textLength / 2 - nodeSize / 2;
           }
         });
 
