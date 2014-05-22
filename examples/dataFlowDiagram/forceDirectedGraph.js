@@ -40,7 +40,6 @@ define(['d3', 'model'], function (d3, Model) {
     // Transform the g element on panning and zooming.
     function zoomed(){
       g.attr('transform', 'translate(' + zoom.translate() + ')scale(' + zoom.scale() + ')');
-      console.log(d3.event.translate, d3.event.scale);
     }
 
     // Stop propagation of drag events here so that both
@@ -48,6 +47,16 @@ define(['d3', 'model'], function (d3, Model) {
     // Draws from http://stackoverflow.com/questions/17953106/why-does-d3-js-v3-break-my-force-graph-when-implementing-zooming-when-v2-doesnt/17976205#17976205
     force.drag().on('dragstart', function () {
       d3.event.sourceEvent.stopPropagation();
+    });
+
+    force.drag().on('dragend', function () {
+      console.log('drag end');
+      var graph = model.get('data'),
+          nodes = graph.nodes;
+
+      nodes.forEach(function (d) { d.fixed = true; });
+
+      model.set('data', graph);
     });
     
     // Arrowhead setup.
