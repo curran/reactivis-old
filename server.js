@@ -30,8 +30,8 @@ app.post('/writeDataFlowGraph', function(req, res) {
     if(err) {
       console.log(err);
     } else {
-      console.log('The file ' + filename + ' was saved!');
-//      console.log(json);
+      //console.log('The file ' + filename + ' was saved!');
+      //console.log(json);
     }
   }); 
 });

@@ -168,11 +168,13 @@ define(['d3', 'model'], function (d3, Model) {
           b.x += k * (x + d / 2 - b.x);
         });
         force.nodes().forEach(function (d) {
-          if(d.isCircle){
-            d.leftX = d.rightX = d.x;
-          } else {
-            d.leftX =  d.x - d.textLength / 2 + nodeSize / 2;
-            d.rightX = d.x + d.textLength / 2 - nodeSize / 2;
+          if(!d.fixed){
+            if(d.isCircle){
+              d.leftX = d.rightX = d.x;
+            } else {
+              d.leftX =  d.x - d.textLength / 2 + nodeSize / 2;
+              d.rightX = d.x + d.textLength / 2 - nodeSize / 2;
+            }
           }
         });
 
