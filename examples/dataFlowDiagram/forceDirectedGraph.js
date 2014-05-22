@@ -4,13 +4,13 @@
 // Draws from http://bl.ocks.org/mbostock/4062045
 //
 // Curran Kelleher 4/30/2014
-// Updated 5/14/2014, 5/20/2014
+// Updated 5/14/2014, 5/20/2014, 5/22/2014
 define(['d3', 'model'], function (d3, Model) {
   return function (div){
     var model = Model(),
         force = d3.layout.force()
           .charge(-200)
-          .linkDistance(150)
+          .linkDistance(140)
           .gravity(0.03),
         zoom = d3.behavior.zoom()
           .on('zoom', zoomed),
@@ -30,7 +30,6 @@ define(['d3', 'model'], function (d3, Model) {
         // The size of nodes and arrows
         nodeSize = 20,
         arrowWidth = 8;
-    console.log(zoom.translate());
     
     model.when(['box', 'scale', 'translate'], function (box, scale, translate) {
       zoom.scale(scale);
