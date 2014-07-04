@@ -2,17 +2,117 @@
   "nodes": [
     {
       "type": "lambda",
-      "index": 0
+      "index": 0,
+      "weight": 2,
+      "x": 150.99552271160897,
+      "y": 88.85098496791045,
+      "px": 150.99552271160897,
+      "py": 88.85098496791045,
+      "isCircle": true,
+      "rectX": -20,
+      "rectWidth": 40,
+      "rightX": 150.99552271160897,
+      "leftX": 150.99552271160897,
+      "fixed": true
     },
     {
       "type": "property",
       "name": "g",
-      "index": 1
+      "index": 1,
+      "weight": 1,
+      "x": 23.390075839959042,
+      "y": 87.98080905471913,
+      "px": 23.390075839959042,
+      "py": 87.98080905471913,
+      "isCircle": true,
+      "rectX": -20,
+      "rectWidth": 40,
+      "rightX": 23.390075839959042,
+      "leftX": 23.390075839959042,
+      "fixed": true
     },
     {
       "type": "property",
       "name": "xAxisG",
-      "index": 2
+      "index": 2,
+      "weight": 2,
+      "x": 295.560048080854,
+      "y": 89.85977495645977,
+      "px": 295.560048080854,
+      "py": 89.85977495645977,
+      "isCircle": false,
+      "rectX": -59.77777862548828,
+      "rectWidth": 119.55555725097656,
+      "textLength": 99.55555725097656,
+      "leftX": 255.78226945536574,
+      "rightX": 335.3378267063423,
+      "fixed": true
+    },
+    {
+      "type": "lambda",
+      "index": 3,
+      "weight": 4,
+      "x": 435.5829753347904,
+      "y": 90.89084651940207,
+      "px": 435.5829753347904,
+      "py": 90.89084651940207,
+      "isCircle": true,
+      "rectX": -20,
+      "rectWidth": 40,
+      "rightX": 435.5829753347904,
+      "leftX": 435.5829753347904,
+      "fixed": true
+    },
+    {
+      "type": "property",
+      "name": "xScale",
+      "index": 4,
+      "weight": 1,
+      "x": 298.55251108198917,
+      "y": 147.60378395061633,
+      "px": 298.55251108198917,
+      "py": 147.60378395061633,
+      "isCircle": false,
+      "rectX": -52.66666793823242,
+      "rectWidth": 105.33333587646484,
+      "textLength": 85.33333587646484,
+      "leftX": 265.88584314375674,
+      "rightX": 331.2191790202216,
+      "fixed": true
+    },
+    {
+      "type": "property",
+      "name": "height",
+      "index": 5,
+      "weight": 1,
+      "x": 299.08970539992964,
+      "y": 28.12032574257966,
+      "px": 299.08970539992964,
+      "py": 28.12032574257966,
+      "isCircle": false,
+      "rectX": -50,
+      "rectWidth": 100,
+      "textLength": 80,
+      "leftX": 269.08970539992964,
+      "rightX": 329.08970539992964,
+      "fixed": true
+    },
+    {
+      "type": "property",
+      "name": "xAxis",
+      "index": 6,
+      "weight": 1,
+      "x": 552.8446626641401,
+      "y": 92.79832630308371,
+      "px": 552.8446626641401,
+      "py": 92.79832630308371,
+      "isCircle": false,
+      "rectX": -48.22222137451172,
+      "rectWidth": 96.44444274902344,
+      "textLength": 76.44444274902344,
+      "leftX": 524.6224412896283,
+      "rightX": 581.0668840386518,
+      "fixed": true
     }
   ],
   "links": [
@@ -23,6 +123,22 @@
     {
       "source": 0,
       "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 4,
+      "target": 3
+    },
+    {
+      "source": 5,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 6
     }
   ]
 }

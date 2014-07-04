@@ -79,39 +79,30 @@ describe('A suite', function() {
   test('xLinearScale', function (model, done) {
     model.set({
       data: [ 3, 4, -1, 5 ],
-      getX: function (d) { return d; }
+      getX: function (d) { return d; },
+      width: 500
     });
-    model.when('xDomain', function (xDomain) {
-      expect(xDomain[0]).to.equal(-1);
-      expect(xDomain[1]).to.equal(5);
-
-      setTimeout(function () {
-        model.set('width', 500);
-        model.when('xRange', function (xRange) {
-          expect(xRange[0]).to.equal(0);
-          expect(xRange[1]).to.equal(500);
-          done();
-        });
-      }, 0);
+    model.when('xScale', function (xScale) {
+      expect(xScale.domain()[0]).to.equal(-1);
+      expect(xScale.domain()[1]).to.equal(5);
+      expect(xScale.range()[0]).to.equal(0);
+      expect(xScale.range()[1]).to.equal(500);
+      done();
     });
   });
 
   test('xOrdinalScale', function (model, done) {
     model.set({
       data: [ 'A', 'B', 'C' ],
-      getX: function (d) { return d; }
+      getX: function (d) { return d; },
+      width: 500
     });
-    model.when('xDomain', function (xDomain) {
-      expect(xDomain[0]).to.equal('A');
-      expect(xDomain[2]).to.equal('C');
-
-      setTimeout(function () {
-        model.set('width', 500);
-        model.when('xRange', function (xRange) {
-          expect(xRange[2]).to.equal(339);
-          done();
-        });
-      }, 0);
+    model.when('xScale', function (xScale) {
+      expect(xScale.domain()[0]).to.equal('A');
+      expect(xScale.domain()[2]).to.equal('C');
+      expect(xScale.range()[0]).to.equal(17);
+      expect(xScale.range()[1]).to.equal(178);
+      done();
     });
   });
 
@@ -131,12 +122,11 @@ describe('A suite', function() {
       getX: function (d) { return d; }
     });
 
-    model.when(['xScale', 'g'], function () {
+    model.when(['xScale', 'height', 'g'], function (xScale) {
       setTimeout(function () {
         outputDataFlowGraph('xAxis', model);
         reactivis(model).xAxis();
-        model.when(['xAxis', 'xAxisG'], function (xAxis, xAxisG) {
-          expect(xAxis.scale()).to.equal(model.get('xScale'));
+        model.when(['xAxisG'], function (xAxisG) {
           expect(xAxisG.node().nodeName).to.equal('G');
           done();
         });
@@ -176,43 +166,32 @@ describe('A suite', function() {
 
   test('yLinearScale', function (model, done) {
     model.set({
-      data: [ 3, 4, -1, 5 ],
-      getY: function (d) { return d; }
+      data: [ 3, 4, -2, 7 ],
+      getY: function (d) { return d; },
+      height: 400
     });
-    model.when('yDomain', function (yDomain) {
-      expect(yDomain[0]).to.equal(-1);
-      expect(yDomain[1]).to.equal(5);
-
-      setTimeout(function () {
-        model.set('height', 500);
-        model.when('yRange', function (yRange) {
-          expect(yRange[0]).to.equal(500);
-          expect(yRange[1]).to.equal(0);
-          done();
-        });
-      }, 0);
+    model.when('yScale', function (yScale) {
+      expect(yScale.domain()[0]).to.equal(-2);
+      expect(yScale.domain()[1]).to.equal(7);
+      expect(yScale.range()[0]).to.equal(0);
+      expect(yScale.range()[1]).to.equal(400);
+      done();
     });
   });
-
-  //test('yOrdinalScale', function (model, done) {
-  //  model.set({
-  //    data: [ 'A', 'B', 'C' ],
-  //    getY: function (d) { return d; }
-  //  });
-  //  model.when('yDomain', function (yDomain) {
-  //    expect(yDomain[0]).to.equal('A');
-  //    expect(yDomain[2]).to.equal('C');
-
-  //    setTimeout(function () {
-  //      model.set('width', 500);
-  //      model.when('yRange', function (yRange) {
-  //        expect(yRange[2]).to.equal(339);
-  //        done();
-  //      });
-  //    }, 0);
-  //  });
-  //});
-
+  test('yOrdinalScale', function (model, done) {
+    model.set({
+      data: [ 'A', 'B', 'C' ],
+      getY: function (d) { return d; },
+      height: 500
+    });
+    model.when('yScale', function (yScale) {
+      expect(yScale.domain()[0]).to.equal('A');
+      expect(yScale.domain()[2]).to.equal('C');
+      expect(yScale.range()[0]).to.equal(17);
+      expect(yScale.range()[1]).to.equal(178);
+      done();
+    });
+  });
   it('yAxis', function(done) {
     var model = Model();
     
@@ -229,18 +208,18 @@ describe('A suite', function() {
       getY: function (d) { return d; }
     });
 
-    model.when(['yScale', 'g'], function () {
+    model.when(['yScale', 'height', 'g'], function (yScale) {
       setTimeout(function () {
         outputDataFlowGraph('yAxis', model);
         reactivis(model).yAxis();
-        model.when(['yAxis', 'yAxisG'], function (yAxis, yAxisG) {
-          expect(yAxis.scale()).to.equal(model.get('yScale'));
+        model.when(['yAxisG'], function (yAxisG) {
           expect(yAxisG.node().nodeName).to.equal('G');
           done();
         });
       }, 0);
     });
   });
+
   it('yAxisLabel', function(done) {
     var model = Model();
     

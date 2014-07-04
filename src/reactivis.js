@@ -1,7 +1,7 @@
 // Reusable reactive model data flow subgraphs
 // for constructung reactive data visualizations.
 //
-// Curran Kelleher 5/20/2014, 7/3/2014
+// Curran Kelleher
 define(['d3'], function(d3){
   var methods = {
 
@@ -78,8 +78,10 @@ define(['d3'], function(d3){
       });
 
       model.when(['xAxisG', 'xScale', 'height'], function (xAxisG, xScale, height) {
-        xAxisG.call(d3.svg.axis().scale(xScale).orient('bottom'));
+        var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
+        xAxisG.call(xAxis);
         xAxisG.attr('transform', 'translate(0,' + height + ')');
+        model.set('xAxis', xAxis);
       });
     },
  
@@ -116,6 +118,17 @@ define(['d3'], function(d3){
       });
     },
 
+    // ## yOrdinalScale
+    //
+    //  * (data, getY, width) -> (yScale)
+    //
+    //<iframe src="../examples/dataFlowDiagram/#yOrdinalScale" width="450" height="200" frameBorder="0"></iframe>
+    yOrdinalScale: function (model) {
+      model.when(['data', 'getY', 'height'], function (data, getY, height) {
+        model.set('yScale', ordinalScale(data, getY, height));
+      });
+    },
+
     // ## yAxis
     //
     //  * (g) -> (yAxisG)
@@ -129,7 +142,9 @@ define(['d3'], function(d3){
       });
 
       model.when(['yAxisG', 'yScale'], function (yAxisG, yScale) {
-        yAxisG.call(d3.svg.axis().scale(yScale).orient('left'));
+        var yAxis = d3.svg.axis().scale(yScale).orient('left');
+        yAxisG.call(yAxis);
+        model.set('yAxis', yAxis);
       });
     },
 

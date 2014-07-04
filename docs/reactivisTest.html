@@ -124,39 +124,30 @@ describe(<span class="hljs-string">'A suite'</span>, <span class="hljs-function"
   test(<span class="hljs-string">'xLinearScale'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model, done)</span> {</span>
     model.set({
       data: [ <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, -<span class="hljs-number">1</span>, <span class="hljs-number">5</span> ],
-      getX: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d; }
+      getX: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d; },
+      width: <span class="hljs-number">500</span>
     });
-    model.when(<span class="hljs-string">'xDomain'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xDomain)</span> {</span>
-      expect(xDomain[<span class="hljs-number">0</span>]).to.equal(-<span class="hljs-number">1</span>);
-      expect(xDomain[<span class="hljs-number">1</span>]).to.equal(<span class="hljs-number">5</span>);
-
-      setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-        model.set(<span class="hljs-string">'width'</span>, <span class="hljs-number">500</span>);
-        model.when(<span class="hljs-string">'xRange'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xRange)</span> {</span>
-          expect(xRange[<span class="hljs-number">0</span>]).to.equal(<span class="hljs-number">0</span>);
-          expect(xRange[<span class="hljs-number">1</span>]).to.equal(<span class="hljs-number">500</span>);
-          done();
-        });
-      }, <span class="hljs-number">0</span>);
+    model.when(<span class="hljs-string">'xScale'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xScale)</span> {</span>
+      expect(xScale.domain()[<span class="hljs-number">0</span>]).to.equal(-<span class="hljs-number">1</span>);
+      expect(xScale.domain()[<span class="hljs-number">1</span>]).to.equal(<span class="hljs-number">5</span>);
+      expect(xScale.range()[<span class="hljs-number">0</span>]).to.equal(<span class="hljs-number">0</span>);
+      expect(xScale.range()[<span class="hljs-number">1</span>]).to.equal(<span class="hljs-number">500</span>);
+      done();
     });
   });
 
   test(<span class="hljs-string">'xOrdinalScale'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model, done)</span> {</span>
     model.set({
       data: [ <span class="hljs-string">'A'</span>, <span class="hljs-string">'B'</span>, <span class="hljs-string">'C'</span> ],
-      getX: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d; }
+      getX: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d; },
+      width: <span class="hljs-number">500</span>
     });
-    model.when(<span class="hljs-string">'xDomain'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xDomain)</span> {</span>
-      expect(xDomain[<span class="hljs-number">0</span>]).to.equal(<span class="hljs-string">'A'</span>);
-      expect(xDomain[<span class="hljs-number">2</span>]).to.equal(<span class="hljs-string">'C'</span>);
-
-      setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-        model.set(<span class="hljs-string">'width'</span>, <span class="hljs-number">500</span>);
-        model.when(<span class="hljs-string">'xRange'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xRange)</span> {</span>
-          expect(xRange[<span class="hljs-number">2</span>]).to.equal(<span class="hljs-number">339</span>);
-          done();
-        });
-      }, <span class="hljs-number">0</span>);
+    model.when(<span class="hljs-string">'xScale'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xScale)</span> {</span>
+      expect(xScale.domain()[<span class="hljs-number">0</span>]).to.equal(<span class="hljs-string">'A'</span>);
+      expect(xScale.domain()[<span class="hljs-number">2</span>]).to.equal(<span class="hljs-string">'C'</span>);
+      expect(xScale.range()[<span class="hljs-number">0</span>]).to.equal(<span class="hljs-number">17</span>);
+      expect(xScale.range()[<span class="hljs-number">1</span>]).to.equal(<span class="hljs-number">178</span>);
+      done();
     });
   });
 
@@ -176,12 +167,11 @@ describe(<span class="hljs-string">'A suite'</span>, <span class="hljs-function"
       getX: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d; }
     });
 
-    model.when([<span class="hljs-string">'xScale'</span>, <span class="hljs-string">'g'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    model.when([<span class="hljs-string">'xScale'</span>, <span class="hljs-string">'height'</span>, <span class="hljs-string">'g'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xScale)</span> {</span>
       setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
         outputDataFlowGraph(<span class="hljs-string">'xAxis'</span>, model);
         reactivis(model).xAxis();
-        model.when([<span class="hljs-string">'xAxis'</span>, <span class="hljs-string">'xAxisG'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xAxis, xAxisG)</span> {</span>
-          expect(xAxis.scale()).to.equal(model.get(<span class="hljs-string">'xScale'</span>));
+        model.when([<span class="hljs-string">'xAxisG'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xAxisG)</span> {</span>
           expect(xAxisG.node().nodeName).to.equal(<span class="hljs-string">'G'</span>);
           done();
         });
@@ -221,66 +211,32 @@ describe(<span class="hljs-string">'A suite'</span>, <span class="hljs-function"
 
   test(<span class="hljs-string">'yLinearScale'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model, done)</span> {</span>
     model.set({
-      data: [ <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, -<span class="hljs-number">1</span>, <span class="hljs-number">5</span> ],
-      getY: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d; }
+      data: [ <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, -<span class="hljs-number">2</span>, <span class="hljs-number">7</span> ],
+      getY: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d; },
+      height: <span class="hljs-number">400</span>
     });
-    model.when(<span class="hljs-string">'yDomain'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yDomain)</span> {</span>
-      expect(yDomain[<span class="hljs-number">0</span>]).to.equal(-<span class="hljs-number">1</span>);
-      expect(yDomain[<span class="hljs-number">1</span>]).to.equal(<span class="hljs-number">5</span>);
-
-      setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-        model.set(<span class="hljs-string">'height'</span>, <span class="hljs-number">500</span>);
-        model.when(<span class="hljs-string">'yRange'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yRange)</span> {</span>
-          expect(yRange[<span class="hljs-number">0</span>]).to.equal(<span class="hljs-number">500</span>);
-          expect(yRange[<span class="hljs-number">1</span>]).to.equal(<span class="hljs-number">0</span>);
-          done();
-        });
-      }, <span class="hljs-number">0</span>);
+    model.when(<span class="hljs-string">'yScale'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yScale)</span> {</span>
+      expect(yScale.domain()[<span class="hljs-number">0</span>]).to.equal(-<span class="hljs-number">2</span>);
+      expect(yScale.domain()[<span class="hljs-number">1</span>]).to.equal(<span class="hljs-number">7</span>);
+      expect(yScale.range()[<span class="hljs-number">0</span>]).to.equal(<span class="hljs-number">0</span>);
+      expect(yScale.range()[<span class="hljs-number">1</span>]).to.equal(<span class="hljs-number">400</span>);
+      done();
     });
-  });</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-3">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <p>test(‘yOrdinalScale’, function (model, done) {
- model.set({
-   data: [ ‘A’, ‘B’, ‘C’ ],
-   getY: function (d) { return d; }
- });
- model.when(‘yDomain’, function (yDomain) {
-   expect(yDomain[0]).to.equal(‘A’);
-   expect(yDomain[2]).to.equal(‘C’);</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p>   setTimeout(function () {
-     model.set(‘width’, 500);
-     model.when(‘yRange’, function (yRange) {
-       expect(yRange[2]).to.equal(339);
-       done();
-     });
-   }, 0);
- });
-});</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
+  });
+  test(<span class="hljs-string">'yOrdinalScale'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model, done)</span> {</span>
+    model.set({
+      data: [ <span class="hljs-string">'A'</span>, <span class="hljs-string">'B'</span>, <span class="hljs-string">'C'</span> ],
+      getY: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d; },
+      height: <span class="hljs-number">500</span>
+    });
+    model.when(<span class="hljs-string">'yScale'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yScale)</span> {</span>
+      expect(yScale.domain()[<span class="hljs-number">0</span>]).to.equal(<span class="hljs-string">'A'</span>);
+      expect(yScale.domain()[<span class="hljs-number">2</span>]).to.equal(<span class="hljs-string">'C'</span>);
+      expect(yScale.range()[<span class="hljs-number">0</span>]).to.equal(<span class="hljs-number">17</span>);
+      expect(yScale.range()[<span class="hljs-number">1</span>]).to.equal(<span class="hljs-number">178</span>);
+      done();
+    });
+  });
   it(<span class="hljs-string">'yAxis'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
     <span class="hljs-keyword">var</span> model = Model();
     
@@ -297,18 +253,18 @@ describe(<span class="hljs-string">'A suite'</span>, <span class="hljs-function"
       getY: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d; }
     });
 
-    model.when([<span class="hljs-string">'yScale'</span>, <span class="hljs-string">'g'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    model.when([<span class="hljs-string">'yScale'</span>, <span class="hljs-string">'height'</span>, <span class="hljs-string">'g'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yScale)</span> {</span>
       setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
         outputDataFlowGraph(<span class="hljs-string">'yAxis'</span>, model);
         reactivis(model).yAxis();
-        model.when([<span class="hljs-string">'yAxis'</span>, <span class="hljs-string">'yAxisG'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yAxis, yAxisG)</span> {</span>
-          expect(yAxis.scale()).to.equal(model.get(<span class="hljs-string">'yScale'</span>));
+        model.when([<span class="hljs-string">'yAxisG'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yAxisG)</span> {</span>
           expect(yAxisG.node().nodeName).to.equal(<span class="hljs-string">'G'</span>);
           done();
         });
       }, <span class="hljs-number">0</span>);
     });
   });
+
   it(<span class="hljs-string">'yAxisLabel'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
     <span class="hljs-keyword">var</span> model = Model();
     
