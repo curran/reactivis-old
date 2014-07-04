@@ -1,8 +1,12 @@
 // A bar chart using reactivis.
-// Curran Kelleher 5/17/2014
-require(['d3', 'barChart', 'model'], function (d3, BarChart, Model) {
-  var barChart = BarChart(),
+// Curran Kelleher 7/4/2014
+require(['d3', 'model', 'reactivis'], function (d3, Model, reactivis) {
+
+  var barChart = reactivis.BarChart(),
       div = document.getElementById('barChartContainer');
+
+  // respond to browser window resizes
+  reactivis(barChart).listenForResize();
 
   barChart.set('div', div);
 
@@ -13,7 +17,7 @@ require(['d3', 'barChart', 'model'], function (d3, BarChart, Model) {
     yLabel: "Frequency"
   });
 
-  d3.tsv('data.tsv', function (d) {
+  d3.tsv('../data/characterFrequencies.tsv', function (d) {
     d.frequency = +d.frequency;
     return d;
   }, function(error, data) {
@@ -21,7 +25,8 @@ require(['d3', 'barChart', 'model'], function (d3, BarChart, Model) {
     // Set the data
     barChart.set('data', data);
 
-    // Reset data each second
+    // Reset data each second to a random subset,
+    // to demonstrate that the bar chart responds correctly.
     setInterval(function () {
 
       // Include each element with a 50% chance.
@@ -33,32 +38,26 @@ require(['d3', 'barChart', 'model'], function (d3, BarChart, Model) {
     }, 1000);
 
     // Randomly change the margin every 1.7 seconds.
-    function random(){ return Math.random() * 100; }
+    function random(){
+      return Math.random() * 100;
+    }
     setInterval(function () {
-      barChart.set('margin', {top: random(), right: random(), bottom: random(), left: random()});
+      barChart.set('margin', {
+        top: random(),
+        right: random(),
+        bottom: random(),
+        left: random()
+      });
     }, 1700);
 
     // Change the Y axis label every 600 ms.
-    function randomString() {
-      var possibilities = ['Frequency', 'Population', 'Alpha', 'Beta'],
-          i = Math.round(Math.random() * possibilities.length);
-      return possibilities[i];
-    }
     setInterval(function () {
-      barChart.set('yLabel', randomString());
+
+      var possibilities = ['Frequency', 'Population', 'Alpha', 'Beta'],
+          i = Math.round(Math.random() * possibilities.length),
+          randomString = possibilities[i];
+
+      barChart.set('yLabel', randomString);
     }, 600);
   });
-
-  // Set size once to initialize
-  setBoxFromDiv();
-
-  // Set size on resize
-  window.addEventListener('resize', setBoxFromDiv);
-
-  function setBoxFromDiv(){
-    barChart.set('box', {
-      width: div.clientWidth,
-      height: div.clientHeight
-    });
-  }
 });

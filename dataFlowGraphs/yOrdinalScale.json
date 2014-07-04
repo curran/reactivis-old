@@ -2,86 +2,27 @@
   "nodes": [
     {
       "type": "lambda",
-      "index": 0,
-      "weight": 4,
-      "x": 399.31015423360606,
-      "y": 91.96748669363248,
-      "px": 399.31015423360606,
-      "py": 91.96748669363248,
-      "isCircle": true,
-      "rectX": -20,
-      "rectWidth": 40,
-      "rightX": 399.31015423360606,
-      "leftX": 399.31015423360606,
-      "fixed": true
+      "index": 0
     },
     {
       "type": "property",
       "name": "data",
-      "index": 1,
-      "weight": 1,
-      "x": 256.86161543974043,
-      "y": 91.2843931303068,
-      "px": 256.86161543974043,
-      "py": 91.2843931303068,
-      "isCircle": false,
-      "rectX": -36.66666603088379,
-      "rectWidth": 73.33333206176758,
-      "textLength": 53.33333206176758,
-      "leftX": 240.19494940885664,
-      "rightX": 273.5282814706242,
-      "fixed": true
+      "index": 1
     },
     {
       "type": "property",
       "name": "getY",
-      "index": 2,
-      "weight": 1,
-      "x": 261.5605654548233,
-      "y": 33.71995489509825,
-      "px": 261.5605654548233,
-      "py": 33.71995489509825,
-      "isCircle": false,
-      "rectX": -41.11111068725586,
-      "rectWidth": 82.22222137451172,
-      "textLength": 62.22222137451172,
-      "leftX": 240.44945476756743,
-      "rightX": 282.67167614207915,
-      "fixed": true
+      "index": 2
     },
     {
       "type": "property",
       "name": "height",
-      "index": 3,
-      "weight": 1,
-      "x": 260.9105452630179,
-      "y": 146.35897429103878,
-      "px": 260.9105452630179,
-      "py": 146.35897429103878,
-      "isCircle": false,
-      "rectX": -50,
-      "rectWidth": 100,
-      "textLength": 80,
-      "leftX": 230.91054526301792,
-      "rightX": 290.9105452630179,
-      "fixed": true
+      "index": 3
     },
     {
       "type": "property",
       "name": "yScale",
-      "index": 4,
-      "weight": 1,
-      "x": 523.4568111848976,
-      "y": 82.58824465253548,
-      "px": 523.4568111848976,
-      "py": 82.58824465253548,
-      "isCircle": false,
-      "rectX": -52.66666793823242,
-      "rectWidth": 105.33333587646484,
-      "textLength": 85.33333587646484,
-      "leftX": 490.79014324666514,
-      "rightX": 556.12347912313,
-      "fixed": true
+      "index": 4
     }
   ],
   "links": [

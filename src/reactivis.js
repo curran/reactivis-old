@@ -2,7 +2,7 @@
 // for constructung reactive data visualizations.
 //
 // Curran Kelleher
-define(['d3'], function(d3){
+define(['d3', 'model'], function(d3, Model){
   var methods = {
 
     // ## svg
@@ -22,6 +22,22 @@ define(['d3'], function(d3){
       model.when(['svg', 'box'], function (svg, box) {
         svg.attr('width', box.width)
            .attr('height', box.height);
+      });
+    },
+
+    // ## listenForResize
+    //
+    //  * DOM resize event, (div) -> (box)
+    listenForResize: function (model) {
+      model.when(['div'], function (div) {
+        function setBoxFromDiv(){
+          model.set('box', {
+            width: div.clientWidth,
+            height: div.clientHeight
+          });
+        }
+        setBoxFromDiv();
+        window.addEventListener('resize', setBoxFromDiv);
       });
     },
 
@@ -183,14 +199,49 @@ define(['d3'], function(d3){
       .rangeRoundBands([0, rangeExtent], 0.1);
   }
 
-  return function (model) {
-    var reactivis = {};
+  var reactivis = function (model) {
+    var chainable = {};
     Object.keys(methods).forEach(function (method) {
-      reactivis[method] = function () {
+      chainable[method] = function () {
         methods[method](model);
-        return reactivis;
+        return chainable;
       };
     });
-    return reactivis;
+    return chainable;
   };
+
+  // ## BarChart()
+  //
+  //   Constructs a reactive bar chart.
+  reactivis.BarChart = function () {
+    var model = Model();
+
+    reactivis(model)
+      .svg()
+      .margin()
+      .xOrdinalScale()
+      .xAxis()
+      .yLinearScale()
+      .yAxis()
+      .yAxisLabel();
+
+    model.when(['g', 'xScale', 'yScale', 'data', 'getX', 'getY'], function (g, xScale, yScale, data, getX, getY) {
+      var bars = g.selectAll('.bar').data(data),
+          barWidth = xScale.rangeBand(),
+          maxBarHeight = yScale.range()[1];
+
+      bars.enter().append('rect').attr('class', 'bar');
+      bars
+        .attr('x', function(d) { return xScale(getX(d)); })
+        .attr('width', barWidth)
+        .attr('y', function(d) { return yScale(getY(d)); })
+        .attr('height', function(d) { return maxBarHeight - yScale(getY(d)); });
+      bars.exit().remove();
+
+      model.set('bars', bars);
+    });
+    return model;
+  };
+
+  return reactivis;
 });
