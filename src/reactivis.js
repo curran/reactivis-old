@@ -227,18 +227,46 @@ define(['d3', 'model'], function(d3, Model){
 
     model.when(['g', 'xScale', 'yScale', 'data', 'getX', 'getY'], function (g, xScale, yScale, data, getX, getY) {
       var bars = g.selectAll('.bar').data(data),
-          barWidth = xScale.rangeBand(),
           maxBarHeight = yScale.range()[1];
 
       bars.enter().append('rect').attr('class', 'bar');
       bars
         .attr('x', function(d) { return xScale(getX(d)); })
-        .attr('width', barWidth)
+        .attr('width', xScale.rangeBand())
         .attr('y', function(d) { return yScale(getY(d)); })
         .attr('height', function(d) { return maxBarHeight - yScale(getY(d)); });
       bars.exit().remove();
 
       model.set('bars', bars);
+    });
+    return model;
+  };
+
+  // ## ScatterPlot()
+  //
+  //   Constructs a reactive scatter plot.
+  reactivis.ScatterPlot = function () {
+    var model = Model();
+
+    reactivis(model)
+      .svg()
+      .margin()
+      .xLinearScale()
+      .xAxis()
+      .xAxisLabel()
+      .yLinearScale()
+      .yAxis()
+      .yAxisLabel();
+
+    model.when(['g', 'xScale', 'yScale', 'data', 'getX', 'getY'], function (g, xScale, yScale, data, getX, getY) {
+      var dots = g.selectAll('.dot').data(data);
+      dots.enter().append('circle')
+        .attr('class', 'dot')
+        .attr('r', 3.5);
+      dots
+        .attr('cx', function(d) { return xScale(getX(d)); })
+        .attr('cy', function(d) { return yScale(getY(d)); });
+      dots.exit().remove();
     });
     return model;
   };

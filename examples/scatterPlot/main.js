@@ -1,6 +1,9 @@
-require(['d3', 'scatterPlot'], function (d3, ScatterPlot) {
+require(['d3', 'reactivis'], function (d3, reactivis) {
   var div = document.getElementById('scatterPlotContainer'),
-      scatterPlot = ScatterPlot();
+      scatterPlot = reactivis.ScatterPlot();
+
+  // respond to browser window resizes
+  reactivis(scatterPlot).listenForResize();
 
   scatterPlot.set('div', div);
 
@@ -22,12 +25,6 @@ require(['d3', 'scatterPlot'], function (d3, ScatterPlot) {
     d.sepalWidth = +d.sepalWidth;
     return d;
   }, function(error, data) {
-
-    // Set size once to initialize
-    setSizeFromDiv();
-
-    // Set size on resize
-    window.addEventListener('resize', setSizeFromDiv);
 
     // Set the data
     scatterPlot.set('data', data);
@@ -59,11 +56,4 @@ require(['d3', 'scatterPlot'], function (d3, ScatterPlot) {
       scatterPlot.set('yLabel', randomString());
     }, 600);
   });
-
-  function setSizeFromDiv(){
-    scatterPlot.set('box', {
-      width: div.clientWidth,
-      height: div.clientHeight
-    });
-  }
 });

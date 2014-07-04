@@ -415,18 +415,57 @@ for constructung reactive data visualizations.</p>
 
     model.when([<span class="hljs-string">'g'</span>, <span class="hljs-string">'xScale'</span>, <span class="hljs-string">'yScale'</span>, <span class="hljs-string">'data'</span>, <span class="hljs-string">'getX'</span>, <span class="hljs-string">'getY'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(g, xScale, yScale, data, getX, getY)</span> {</span>
       <span class="hljs-keyword">var</span> bars = g.selectAll(<span class="hljs-string">'.bar'</span>).data(data),
-          barWidth = xScale.rangeBand(),
           maxBarHeight = yScale.range()[<span class="hljs-number">1</span>];
 
       bars.enter().append(<span class="hljs-string">'rect'</span>).attr(<span class="hljs-string">'class'</span>, <span class="hljs-string">'bar'</span>);
       bars
         .attr(<span class="hljs-string">'x'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> xScale(getX(d)); })
-        .attr(<span class="hljs-string">'width'</span>, barWidth)
+        .attr(<span class="hljs-string">'width'</span>, xScale.rangeBand())
         .attr(<span class="hljs-string">'y'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> yScale(getY(d)); })
         .attr(<span class="hljs-string">'height'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> maxBarHeight - yScale(getY(d)); });
       bars.exit().remove();
 
       model.set(<span class="hljs-string">'bars'</span>, bars);
+    });
+    <span class="hljs-keyword">return</span> model;
+  };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <h2 id="scatterplot-">ScatterPlot()</h2>
+<p>  Constructs a reactive scatter plot.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  reactivis.ScatterPlot = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> model = Model();
+
+    reactivis(model)
+      .svg()
+      .margin()
+      .xLinearScale()
+      .xAxis()
+      .xAxisLabel()
+      .yLinearScale()
+      .yAxis()
+      .yAxisLabel();
+
+    model.when([<span class="hljs-string">'g'</span>, <span class="hljs-string">'xScale'</span>, <span class="hljs-string">'yScale'</span>, <span class="hljs-string">'data'</span>, <span class="hljs-string">'getX'</span>, <span class="hljs-string">'getY'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(g, xScale, yScale, data, getX, getY)</span> {</span>
+      <span class="hljs-keyword">var</span> dots = g.selectAll(<span class="hljs-string">'.dot'</span>).data(data);
+      dots.enter().append(<span class="hljs-string">'circle'</span>)
+        .attr(<span class="hljs-string">'class'</span>, <span class="hljs-string">'dot'</span>)
+        .attr(<span class="hljs-string">'r'</span>, <span class="hljs-number">3.5</span>);
+      dots
+        .attr(<span class="hljs-string">'cx'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> xScale(getX(d)); })
+        .attr(<span class="hljs-string">'cy'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> yScale(getY(d)); });
+      dots.exit().remove();
     });
     <span class="hljs-keyword">return</span> model;
   };
