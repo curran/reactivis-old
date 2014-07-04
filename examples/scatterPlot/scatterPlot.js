@@ -12,7 +12,13 @@ define(['d3', 'model', 'reactivis'], function (d3, Model, reactivis) {
       .yAxis()
       .yAxisLabel();
 
-    model.when(['g', 'xScale', 'yScale', 'xDomain', 'xRange', 'yDomain', 'yRange', 'data', 'getX', 'getY', 'width', 'height'], function (g, xScale, yScale, xDomain, xRange, yDomain, yRange, data, getX, getY, width, height) {
+    model.set({
+      xScaleType: 'linear',
+      yScaleType: 'linear'
+    });
+
+
+    model.when(['g', 'xScale', 'yScale', 'data', 'getX', 'getY'], function (g, xScale, yScale, data, getX, getY) {
       var dots = g.selectAll('.dot').data(data);
       dots.enter().append('circle')
         .attr('class', 'dot')

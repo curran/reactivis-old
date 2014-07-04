@@ -29,7 +29,7 @@
               </div>
               <p>Reusable reactive model data flow subgraphs
 for constructung reactive data visualizations.</p>
-<p>Curran Kelleher 5/20/2014</p>
+<p>Curran Kelleher 5/20/2014, 7/3/2014</p>
 
             </div>
             
@@ -109,18 +109,17 @@ for constructung reactive data visualizations.</p>
               </div>
               <h2 id="xlinearscale">xLinearScale</h2>
 <ul>
-<li>D3 Linear Scale -&gt; (xScale)</li>
-<li>(xScale, data, getX) -&gt; (xDomain)</li>
-<li>(xScale, width) -&gt; (xRange)</li>
+<li>(data, getX, width) -&gt; (xScale)</li>
 </ul>
 <iframe src="../examples/dataFlowDiagram/#xLinearScale" width="450" height="200" frameBorder="0"></iframe>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>    xLinearScale: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
-      model.set(<span class="hljs-string">'xScale'</span>, d3.scale.linear());
-
-      model.when([<span class="hljs-string">'xScale'</span>, <span class="hljs-string">'data'</span>, <span class="hljs-string">'getX'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xScale, data, getX)</span> {</span></pre></div></div>
+      model.when([<span class="hljs-string">'data'</span>, <span class="hljs-string">'getX'</span>, <span class="hljs-string">'width'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, getX, width)</span> {</span>
+        model.set(<span class="hljs-string">'xScale'</span>, linearScale(data, getX, width));
+      });
+    },</pre></div></div>
             
         </li>
         
@@ -131,17 +130,17 @@ for constructung reactive data visualizations.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>TODO make min, max configurable</p>
+              <h2 id="xordinalscale">xOrdinalScale</h2>
+<ul>
+<li>(data, getX, width) -&gt; (xScale)</li>
+</ul>
+<iframe src="../examples/dataFlowDiagram/#xOrdinalScale" width="450" height="200" frameBorder="0"></iframe>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        xScale.domain([d3.min(data, getX), d3.max(data, getX)]);
-        model.set(<span class="hljs-string">'xDomain'</span>, xScale.domain());
-      });
-
-      model.when([<span class="hljs-string">'xScale'</span>, <span class="hljs-string">'width'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xScale, width)</span> {</span>
-        xScale.range([<span class="hljs-number">0</span>, width]);
-        model.set(<span class="hljs-string">'xRange'</span>, xScale.range());
+            <div class="content"><div class='highlight'><pre>    xOrdinalScale: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
+      model.when([<span class="hljs-string">'data'</span>, <span class="hljs-string">'getX'</span>, <span class="hljs-string">'width'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, getX, width)</span> {</span>
+        model.set(<span class="hljs-string">'xScale'</span>, ordinalScale(data, getX, width));
       });
     },</pre></div></div>
             
@@ -154,26 +153,26 @@ for constructung reactive data visualizations.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <h2 id="xordinalscale">xOrdinalScale</h2>
+              <h2 id="xaxis">xAxis</h2>
 <ul>
-<li>D3 Ordinal Scale -&gt; (xScale)</li>
-<li>(xScale, data, getX) -&gt; (xDomain)</li>
-<li>(xScale, width) -&gt; (xRange)</li>
+<li>(g) -&gt; (xAxisG)</li>
+<li>(xAxisG, xScale, height) -&gt; X Axis DOM</li>
 </ul>
-<iframe src="../examples/dataFlowDiagram/#xOrdinalScale" width="450" height="200" frameBorder="0"></iframe>
+<iframe src="../examples/dataFlowDiagram/#xAxis" width="450" height="200" frameBorder="0"></iframe>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    xOrdinalScale: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
+            <div class="content"><div class='highlight'><pre>    xAxis: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
 
-      model.set(<span class="hljs-string">'xScale'</span>, d3.scale.ordinal());
-
-      model.when([<span class="hljs-string">'xScale'</span>, <span class="hljs-string">'data'</span>, <span class="hljs-string">'getX'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xScale, data, getX)</span> {</span>
-        xScale.domain(data.map(getX));
-        model.set(<span class="hljs-string">'xDomain'</span>, xScale.domain());
+      model.when(<span class="hljs-string">'g'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(g)</span> {</span>
+        model.set(<span class="hljs-string">'xAxisG'</span>, g.append(<span class="hljs-string">'g'</span>).attr(<span class="hljs-string">'class'</span>, <span class="hljs-string">'x axis'</span>));
       });
 
-      model.when([<span class="hljs-string">'xScale'</span>, <span class="hljs-string">'width'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xScale, width)</span> {</span></pre></div></div>
+      model.when([<span class="hljs-string">'xAxisG'</span>, <span class="hljs-string">'xScale'</span>, <span class="hljs-string">'height'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xAxisG, xScale, height)</span> {</span>
+        xAxisG.call(d3.svg.axis().scale(xScale).orient(<span class="hljs-string">'bottom'</span>));
+        xAxisG.attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate(0,'</span> + height + <span class="hljs-string">')'</span>);
+      });
+    },</pre></div></div>
             
         </li>
         
@@ -184,67 +183,10 @@ for constructung reactive data visualizations.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>TODO make the 0.1 a model property</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        xScale.rangeRoundBands([<span class="hljs-number">0</span>, width], <span class="hljs-number">0.1</span>);
-        model.set(<span class="hljs-string">'xRange'</span>, xScale.range());
-      });
-    },</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <h2 id="xaxis">xAxis</h2>
-<ul>
-<li>(xScale) -&gt; (xAxis)</li>
-<li>(g) -&gt; (xAxisG)</li>
-<li>(xAxis, xAxisG, xDomain, xRange) -&gt; X Axis DOM</li>
-<li>(xAxisG, height) -&gt; X Axis DOM</li>
-</ul>
-<iframe src="../examples/dataFlowDiagram/#xAxis" width="450" height="200" frameBorder="0"></iframe>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    xAxis: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
-
-      model.when(<span class="hljs-string">'xScale'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xScale)</span> {</span>
-        model.set(<span class="hljs-string">'xAxis'</span>, d3.svg.axis().scale(xScale).orient(<span class="hljs-string">'bottom'</span>));
-      });
-
-      model.when(<span class="hljs-string">'g'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(g)</span> {</span>
-        model.set(<span class="hljs-string">'xAxisG'</span>, g.append(<span class="hljs-string">'g'</span>).attr(<span class="hljs-string">'class'</span>, <span class="hljs-string">'x axis'</span>));
-      });
-
-      model.when([<span class="hljs-string">'xAxis'</span>, <span class="hljs-string">'xAxisG'</span>, <span class="hljs-string">'xDomain'</span>, <span class="hljs-string">'xRange'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xAxis, xAxisG)</span> {</span>
-        xAxisG.call(xAxis);
-      });
-
-      model.when([<span class="hljs-string">'xAxisG'</span>, <span class="hljs-string">'height'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xAxisG, height)</span> {</span>
-        xAxisG.attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate(0,'</span> + height + <span class="hljs-string">')'</span>);
-      });
-    },</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
               <h2 id="xaxislabel">xAxisLabel</h2>
 <ul>
 <li>(xAxisG) -&gt; (xAxisLabel)</li>
-<li>(xAxisLabel, xLabel) -&gt; X Axis Label DOM text</li>
+<li>(xAxisLabel, xLabel, width) -&gt; X Axis Label DOM</li>
 </ul>
 <iframe src="../examples/dataFlowDiagram/#xAxisLabel" width="450" height="200" frameBorder="0"></iframe>
 
@@ -259,12 +201,62 @@ for constructung reactive data visualizations.</p>
           .style(<span class="hljs-string">'text-anchor'</span>, <span class="hljs-string">'end'</span>));
       });
 
-      model.when([<span class="hljs-string">'xAxisLabel'</span>, <span class="hljs-string">'xLabel'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xAxisLabel, xLabel)</span> {</span>
-        xAxisLabel.text(xLabel);
+      model.when([<span class="hljs-string">'xAxisLabel'</span>, <span class="hljs-string">'xLabel'</span>, <span class="hljs-string">'width'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xAxisLabel, xLabel, width)</span> {</span>
+        xAxisLabel
+          .text(xLabel)
+          .attr(<span class="hljs-string">'x'</span>, width);
+      });
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h2 id="ylinearscale">yLinearScale</h2>
+<ul>
+<li>(data, getY, height) -&gt; (yScale)</li>
+</ul>
+<iframe src="../examples/dataFlowDiagram/#yLinearScale" width="450" height="200" frameBorder="0"></iframe>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    yLinearScale: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
+      model.when([<span class="hljs-string">'data'</span>, <span class="hljs-string">'getY'</span>, <span class="hljs-string">'height'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, getY, height)</span> {</span>
+        model.set(<span class="hljs-string">'yScale'</span>, linearScale(data, getY, height));
+      });
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <h2 id="yaxis">yAxis</h2>
+<ul>
+<li>(g) -&gt; (yAxisG)</li>
+<li>(yAxisG, yScale) -&gt; Y Axis DOM</li>
+</ul>
+<iframe src="../examples/dataFlowDiagram/#yAxis" width="450" height="200" frameBorder="0"></iframe>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    yAxis: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
+
+      model.when(<span class="hljs-string">'g'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(g)</span> {</span>
+        model.set(<span class="hljs-string">'yAxisG'</span>, g.append(<span class="hljs-string">'g'</span>).attr(<span class="hljs-string">'class'</span>, <span class="hljs-string">'y axis'</span>));
       });
 
-      model.when([<span class="hljs-string">'xAxisLabel'</span>, <span class="hljs-string">'width'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xAxisLabel, width)</span> {</span>
-        xAxisLabel.attr(<span class="hljs-string">'x'</span>, width);
+      model.when([<span class="hljs-string">'yAxisG'</span>, <span class="hljs-string">'yScale'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yAxisG, yScale)</span> {</span>
+        yAxisG.call(d3.svg.axis().scale(yScale).orient(<span class="hljs-string">'left'</span>));
       });
     },</pre></div></div>
             
@@ -277,105 +269,10 @@ for constructung reactive data visualizations.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <h2 id="ylinearscale">yLinearScale</h2>
-<ul>
-<li>D3 Linear Scale -&gt; (yScale)</li>
-<li>(yScale, data, getY) -&gt; (yDomain)</li>
-<li>(yScale, height) -&gt; (yRange)</li>
-</ul>
-<iframe src="../examples/dataFlowDiagram/#yLinearScale" width="450" height="200" frameBorder="0"></iframe>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    yLinearScale: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
-      model.set(<span class="hljs-string">'yScale'</span>, d3.scale.linear());
-
-      model.when([<span class="hljs-string">'yScale'</span>, <span class="hljs-string">'data'</span>, <span class="hljs-string">'getY'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yScale, data, getY)</span> {</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <p>TODO make min, max configurable</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        yScale.domain([d3.min(data, getY), d3.max(data, getY)]);
-        model.set(<span class="hljs-string">'yDomain'</span>, yScale.domain());
-      });
-
-      model.when([<span class="hljs-string">'yScale'</span>, <span class="hljs-string">'height'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yScale, height)</span> {</span>
-        yScale.range([height, <span class="hljs-number">0</span>]);
-        model.set(<span class="hljs-string">'yRange'</span>, yScale.range());
-      });
-    },</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-12">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
-              </div>
-              <h2 id="yaxis">yAxis</h2>
-<ul>
-<li>(yScale) -&gt; (yAxis)</li>
-<li>(g) -&gt; (yAxisG)</li>
-<li>(yAxis, yAxisG, yDomain, yRange) -&gt; Y Axis DOM</li>
-</ul>
-<iframe src="../examples/dataFlowDiagram/#yAxis" width="450" height="200" frameBorder="0"></iframe>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    yAxis: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
-
-      model.when(<span class="hljs-string">'yScale'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yScale)</span> {</span>
-        model.set(<span class="hljs-string">'yAxis'</span>, d3.svg.axis().scale(yScale).orient(<span class="hljs-string">'left'</span>));</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-13">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
-              </div>
-              <p>TODO add .ticks(10, ‘%’));</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      });
-
-      model.when(<span class="hljs-string">'g'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(g)</span> {</span>
-        model.set(<span class="hljs-string">'yAxisG'</span>, g.append(<span class="hljs-string">'g'</span>).attr(<span class="hljs-string">'class'</span>, <span class="hljs-string">'y axis'</span>));
-      });
-
-      model.when([<span class="hljs-string">'yAxis'</span>, <span class="hljs-string">'yAxisG'</span>, <span class="hljs-string">'yDomain'</span>, <span class="hljs-string">'yRange'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yAxis, yAxisG)</span> {</span>
-        yAxisG.call(yAxis);
-      });
-    },</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-14">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
-              </div>
               <h2 id="yaxislabel">yAxisLabel</h2>
 <ul>
 <li>(yAxisG) -&gt; (yAxisLabel)</li>
-<li>(yAxisLabel, yLabel) -&gt; Y Axis Label DOM text</li>
+<li>(yAxisLabel, yLabel) -&gt; Y Axis Label DOM</li>
 </ul>
 <iframe src="../examples/dataFlowDiagram/#yAxisLabel" width="450" height="200" frameBorder="0"></iframe>
 
@@ -396,6 +293,33 @@ for constructung reactive data visualizations.</p>
       });
     }
   };
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">linearScale</span><span class="hljs-params">(data, accessor, rangeExtent)</span>{</span>
+    <span class="hljs-keyword">return</span> d3.scale.linear()
+      .domain(d3.extent(data, accessor))
+      .range([<span class="hljs-number">0</span>, rangeExtent]);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ordinalScale</span><span class="hljs-params">(data, accessor, rangeExtent)</span>{</span>
+    <span class="hljs-keyword">return</span> d3.scale.ordinal()
+      .domain(data.map(accessor))</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>TODO make the 0.1 a model property</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      .rangeRoundBands([<span class="hljs-number">0</span>, rangeExtent], <span class="hljs-number">0.1</span>);
+  }
+
   <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
     <span class="hljs-keyword">var</span> reactivis = {};
     <span class="hljs-built_in">Object</span>.keys(methods).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method)</span> {</span>

@@ -1,7 +1,7 @@
 // Reusable reactive model data flow subgraphs
 // for constructung reactive data visualizations.
 //
-// Curran Kelleher 5/20/2014
+// Curran Kelleher 5/20/2014, 7/3/2014
 define(['d3'], function(d3){
   var methods = {
 
@@ -45,72 +45,40 @@ define(['d3'], function(d3){
 
     // ## xLinearScale
     //
-    //  * D3 Linear Scale -> (xScale)
-    //  * (xScale, data, getX) -> (xDomain)
-    //  * (xScale, width) -> (xRange)
+    //  * (data, getX, width) -> (xScale)
     //
     //<iframe src="../examples/dataFlowDiagram/#xLinearScale" width="450" height="200" frameBorder="0"></iframe>
     xLinearScale: function (model) {
-      model.set('xScale', d3.scale.linear());
-
-      model.when(['xScale', 'data', 'getX'], function (xScale, data, getX) {
-        // TODO make min, max configurable
-        xScale.domain([d3.min(data, getX), d3.max(data, getX)]);
-        model.set('xDomain', xScale.domain());
-      });
-
-      model.when(['xScale', 'width'], function (xScale, width) {
-        xScale.range([0, width]);
-        model.set('xRange', xScale.range());
+      model.when(['data', 'getX', 'width'], function (data, getX, width) {
+        model.set('xScale', linearScale(data, getX, width));
       });
     },
 
     // ## xOrdinalScale
     //
-    //  * D3 Ordinal Scale -> (xScale)
-    //  * (xScale, data, getX) -> (xDomain)
-    //  * (xScale, width) -> (xRange)
+    //  * (data, getX, width) -> (xScale)
     //
     //<iframe src="../examples/dataFlowDiagram/#xOrdinalScale" width="450" height="200" frameBorder="0"></iframe>
     xOrdinalScale: function (model) {
-
-      model.set('xScale', d3.scale.ordinal());
-
-      model.when(['xScale', 'data', 'getX'], function (xScale, data, getX) {
-        xScale.domain(data.map(getX));
-        model.set('xDomain', xScale.domain());
-      });
-
-      model.when(['xScale', 'width'], function (xScale, width) {
-        // TODO make the 0.1 a model property
-        xScale.rangeRoundBands([0, width], 0.1);
-        model.set('xRange', xScale.range());
+      model.when(['data', 'getX', 'width'], function (data, getX, width) {
+        model.set('xScale', ordinalScale(data, getX, width));
       });
     },
 
     // ## xAxis
     //
-    //  * (xScale) -> (xAxis)
     //  * (g) -> (xAxisG)
-    //  * (xAxis, xAxisG, xDomain, xRange) -> X Axis DOM
-    //  * (xAxisG, height) -> X Axis DOM
+    //  * (xAxisG, xScale, height) -> X Axis DOM
     //
     //<iframe src="../examples/dataFlowDiagram/#xAxis" width="450" height="200" frameBorder="0"></iframe>
     xAxis: function (model) {
-
-      model.when('xScale', function (xScale) {
-        model.set('xAxis', d3.svg.axis().scale(xScale).orient('bottom'));
-      });
 
       model.when('g', function (g) {
         model.set('xAxisG', g.append('g').attr('class', 'x axis'));
       });
 
-      model.when(['xAxis', 'xAxisG', 'xDomain', 'xRange'], function (xAxis, xAxisG) {
-        xAxisG.call(xAxis);
-      });
-
-      model.when(['xAxisG', 'height'], function (xAxisG, height) {
+      model.when(['xAxisG', 'xScale', 'height'], function (xAxisG, xScale, height) {
+        xAxisG.call(d3.svg.axis().scale(xScale).orient('bottom'));
         xAxisG.attr('transform', 'translate(0,' + height + ')');
       });
     },
@@ -118,7 +86,7 @@ define(['d3'], function(d3){
     // ## xAxisLabel
     //
     //  * (xAxisG) -> (xAxisLabel)
-    //  * (xAxisLabel, xLabel) -> X Axis Label DOM text
+    //  * (xAxisLabel, xLabel, width) -> X Axis Label DOM
     //
     //<iframe src="../examples/dataFlowDiagram/#xAxisLabel" width="450" height="200" frameBorder="0"></iframe>
     xAxisLabel: function (model) {
@@ -130,65 +98,45 @@ define(['d3'], function(d3){
           .style('text-anchor', 'end'));
       });
 
-      model.when(['xAxisLabel', 'xLabel'], function (xAxisLabel, xLabel) {
-        xAxisLabel.text(xLabel);
-      });
-
-      model.when(['xAxisLabel', 'width'], function (xAxisLabel, width) {
-        xAxisLabel.attr('x', width);
+      model.when(['xAxisLabel', 'xLabel', 'width'], function (xAxisLabel, xLabel, width) {
+        xAxisLabel
+          .text(xLabel)
+          .attr('x', width);
       });
     },
 
     // ## yLinearScale
     //
-    //  * D3 Linear Scale -> (yScale)
-    //  * (yScale, data, getY) -> (yDomain)
-    //  * (yScale, height) -> (yRange)
+    //  * (data, getY, height) -> (yScale)
     //
     //<iframe src="../examples/dataFlowDiagram/#yLinearScale" width="450" height="200" frameBorder="0"></iframe>
     yLinearScale: function (model) {
-      model.set('yScale', d3.scale.linear());
-
-      model.when(['yScale', 'data', 'getY'], function (yScale, data, getY) {
-        // TODO make min, max configurable
-        yScale.domain([d3.min(data, getY), d3.max(data, getY)]);
-        model.set('yDomain', yScale.domain());
-      });
-
-      model.when(['yScale', 'height'], function (yScale, height) {
-        yScale.range([height, 0]);
-        model.set('yRange', yScale.range());
+      model.when(['data', 'getY', 'height'], function (data, getY, height) {
+        model.set('yScale', linearScale(data, getY, height));
       });
     },
 
     // ## yAxis
     //
-    //  * (yScale) -> (yAxis)
     //  * (g) -> (yAxisG)
-    //  * (yAxis, yAxisG, yDomain, yRange) -> Y Axis DOM
+    //  * (yAxisG, yScale) -> Y Axis DOM
     //
     //<iframe src="../examples/dataFlowDiagram/#yAxis" width="450" height="200" frameBorder="0"></iframe>
     yAxis: function (model) {
-
-      model.when('yScale', function (yScale) {
-        model.set('yAxis', d3.svg.axis().scale(yScale).orient('left'));
-
-        // TODO add .ticks(10, '%'));
-      });
 
       model.when('g', function (g) {
         model.set('yAxisG', g.append('g').attr('class', 'y axis'));
       });
 
-      model.when(['yAxis', 'yAxisG', 'yDomain', 'yRange'], function (yAxis, yAxisG) {
-        yAxisG.call(yAxis);
+      model.when(['yAxisG', 'yScale'], function (yAxisG, yScale) {
+        yAxisG.call(d3.svg.axis().scale(yScale).orient('left'));
       });
     },
 
     // ## yAxisLabel
     //
     //  * (yAxisG) -> (yAxisLabel)
-    //  * (yAxisLabel, yLabel) -> Y Axis Label DOM text
+    //  * (yAxisLabel, yLabel) -> Y Axis Label DOM
     //
     //<iframe src="../examples/dataFlowDiagram/#yAxisLabel" width="450" height="200" frameBorder="0"></iframe>
     yAxisLabel: function (model) {
@@ -206,6 +154,20 @@ define(['d3'], function(d3){
       });
     }
   };
+
+  function linearScale(data, accessor, rangeExtent){
+    return d3.scale.linear()
+      .domain(d3.extent(data, accessor))
+      .range([0, rangeExtent]);
+  }
+
+  function ordinalScale(data, accessor, rangeExtent){
+    return d3.scale.ordinal()
+      .domain(data.map(accessor))
+      // TODO make the 0.1 a model property
+      .rangeRoundBands([0, rangeExtent], 0.1);
+  }
+
   return function (model) {
     var reactivis = {};
     Object.keys(methods).forEach(function (method) {
