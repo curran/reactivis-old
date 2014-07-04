@@ -10,17 +10,17 @@ require(['d3', 'reactivis'], function (d3, reactivis) {
   scatterPlot.set({
     getX: function (d) { return d.sepalWidth; },
     getY: function (d) { return d.sepalLength; },
-    "xLabel": "Sepal Width (cm)",
-    "yLabel": "Sepal Length (cm)",
-    "margin": {
-      "top": 20,
-      "right": 20,
-      "bottom": 30,
-      "left": 40
+    xLabel: 'Sepal Width (cm)',
+    yLabel: 'Sepal Length (cm)',
+    margin: {
+      top: 20,
+      right: 20,
+      bottom: 30,
+      left: 40
     }
   }); 
 
-  d3.tsv('data.tsv', function (d) {
+  d3.tsv('../data/iris.tsv', function (d) {
     d.sepalLength = +d.sepalLength;
     d.sepalWidth = +d.sepalWidth;
     return d;
