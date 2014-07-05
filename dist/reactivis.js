@@ -82,6 +82,19 @@ define('reactivis/reactivis',['d3', 'model'], function(d3, Model){
       });
     },
 
+    // ## x
+    //
+    // A function that returns the scaled X value given a data object.
+    //
+    //  * (getX, xScale) -> (x)
+    x: function (model) {
+      model.when(['getX', 'xScale'], function (getX, xScale) {
+        model.set('x', function (d) {
+          return xScale(getX(d));
+        });
+      });
+    },
+
     // ## xAxis
     //
     //  * (g) -> (xAxisG)
@@ -143,6 +156,19 @@ define('reactivis/reactivis',['d3', 'model'], function(d3, Model){
     yOrdinalScale: function (model) {
       model.when(['data', 'getY', 'height'], function (data, getY, height) {
         model.set('yScale', ordinalScale(data, getY, height));
+      });
+    },
+
+    // ## y
+    //
+    // A function that returns the scaled Y value given a data object.
+    //
+    //  * (getY, yScale) -> (y)
+    y: function (model) {
+      model.when(['getY', 'yScale'], function (getY, yScale) {
+        model.set('y', function (d) {
+          return yScale(getY(d));
+        });
       });
     },
 
@@ -222,23 +248,21 @@ define('reactivis/reactivis',['d3', 'model'], function(d3, Model){
       .margin()
       .xOrdinalScale()
       .xAxis()
+      .x()
       .yLinearScale()
       .yAxis()
-      .yAxisLabel();
+      .yAxisLabel()
+      .y();
 
-    model.when(['g', 'xScale', 'yScale', 'data', 'getX', 'getY'], function (g, xScale, yScale, data, getX, getY) {
-      var bars = g.selectAll('.bar').data(data),
-          maxBarHeight = yScale.range()[1];
-
+    model.when(['g', 'data', 'x', 'y', 'xScale', 'height'], function (g, data, x, y, xScale, height) {
+      var bars = g.selectAll('.bar').data(data);
       bars.enter().append('rect').attr('class', 'bar');
       bars
-        .attr('x', function(d) { return xScale(getX(d)); })
+        .attr('x', x)
         .attr('width', xScale.rangeBand())
-        .attr('y', function(d) { return yScale(getY(d)); })
-        .attr('height', function(d) { return maxBarHeight - yScale(getY(d)); });
+        .attr('y', y)
+        .attr('height', function(d) { return height - y(d); });
       bars.exit().remove();
-
-      model.set('bars', bars);
     });
     return model;
   };
@@ -255,18 +279,20 @@ define('reactivis/reactivis',['d3', 'model'], function(d3, Model){
       .xLinearScale()
       .xAxis()
       .xAxisLabel()
+      .x()
       .yLinearScale()
       .yAxis()
-      .yAxisLabel();
+      .yAxisLabel()
+      .y();
 
-    model.when(['g', 'xScale', 'yScale', 'data', 'getX', 'getY'], function (g, xScale, yScale, data, getX, getY) {
+    model.when(['g', 'data', 'x', 'y'], function (g, data, x, y) {
       var dots = g.selectAll('.dot').data(data);
       dots.enter().append('circle')
         .attr('class', 'dot')
         .attr('r', 3.5);
       dots
-        .attr('cx', function(d) { return xScale(getX(d)); })
-        .attr('cy', function(d) { return yScale(getY(d)); });
+        .attr('cx', x)
+        .attr('cy', y);
       dots.exit().remove();
     });
     return model;

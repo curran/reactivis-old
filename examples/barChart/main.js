@@ -18,7 +18,7 @@ require(['d3', 'model', 'reactivis'], function (d3, Model, reactivis) {
   });
 
   d3.tsv('../data/characterFrequencies.tsv', function (d) {
-    d.frequency = +d.frequency;
+    d.freq = +d.freq;
     return d;
   }, function(error, data) {
 
