@@ -18,13 +18,13 @@ require(['d3', 'forceDirectedGraph'], function (d3, ForceDirectedGraph) {
       filename = '../../dataFlowGraphs/' + name + '.json';
 
   // Load the data flow graph file.
-  d3.json(filename, function (data) {
+  d3.json(filename, function (state) {
 
     // Set the data on the graph visualization.
-    forceDirectedGraph.set('data', data);
+    forceDirectedGraph.set(state);
 
     // Whenever the user manually positions nodes,
-    forceDirectedGraph.when('data', function (data) {
+    forceDirectedGraph.when(['data', 'scale', 'translate'], function (data, scale, translate) {
 
       // If the code is running in a development environment,
       if( window.location.host === 'localhost:8000') {
@@ -40,8 +40,10 @@ require(['d3', 'forceDirectedGraph'], function (d3, ForceDirectedGraph) {
                 source: d.source.index,
                 target: d.target.index
               };
-            })
-          }
+            }),
+          },
+          scale: scale,
+          translate: translate
         }); 
       }
     });

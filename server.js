@@ -17,22 +17,18 @@ app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded()); // to support URL-encoded bodies
 
 app.post('/writeDataFlowGraph', function(req, res) {
-  var name = req.body.name,
-      data = req.body.data,
-      json = JSON.stringify(data, null, 2),
-      filename = './dataFlowGraphs/' + name + '.json';
+
+  // Extract the serialized model state from the request body.
+  var state = req.body,
+      json = JSON.stringify(state, null, 2),
+      filename = './dataFlowGraphs/' + state.name + '.json';
 
   // Close the connection.
   res.send('');
 
   // Write the file to disk.
   fs.writeFile(filename, json, function(err) {
-    if(err) {
-      console.log(err);
-    } else {
-      //console.log('The file ' + filename + ' was saved!');
-      //console.log(json);
-    }
+    if(err) { console.log(err); }
   }); 
 });
 

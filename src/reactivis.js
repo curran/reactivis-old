@@ -1,5 +1,5 @@
 // Reusable reactive model data flow subgraphs
-// for constructung reactive data visualizations.
+// for constructing reactive data visualizations.
 //
 // Curran Kelleher
 define(['d3', 'model'], function(d3, Model){
