@@ -9,7 +9,7 @@ This table shows a visual representation of some components.
 
 <img src="components.png"></img>
 
-A writeup of the ideas behind Reactivis, see the "Reactive Data Visualizations" chapter of [Visualizing the Universal Data Cube](http://curran.github.io/phd/dissertation/dissertation.pdf).
+For a writeup of the ideas behind Reactivis, see the "Reactive Data Visualizations" chapter of [Visualizing the Universal Data Cube](http://curran.github.io/phd/dissertation/dissertation.pdf).
 
 
 See also the [Reactive Data Visualization Talk](), which describes how this project started.
