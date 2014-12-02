@@ -1,5 +1,15 @@
+/**
+ * Unit tests for the Reactivis library.
+ *
+ * Curran Kelleher
+ * December 2014
+ */
 var requirejs = require('requirejs'),
+
+    // JSDom is used for rendering D3 visualizations
+    // within NodeJS, without requiring a browser. 
     jsdom = require('jsdom').jsdom,
+
     d3 = require('d3'),
     fs = require('fs'),
     expect = require('chai').expect;

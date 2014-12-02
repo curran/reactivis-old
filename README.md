@@ -1,11 +1,16 @@
-reactivis
+Reactivis
 =========
 
-(a start at) Reusable Interactive D3 Data Visualizations.
+Components for building reusable interactive data visualizations using [D3](http://d3js.org/) and [ModelJS](https://github.com/curran/model).
 
 Check out the [documentation](http://curran.github.io/reactivis/docs/reactivis.html).
 
-This library provides a toolkit of reusable reactive D3 patterns using [model.js](https://github.com/curran/model).
+This table shows a visual representation of some components.
+
+<img src="components.png"></img>
+
+A writeup of the ideas behind Reactivis, see the "Reactive Data Visualizations" chapter of [Visualizing the Universal Data Cube](http://curran.github.io/phd/dissertation/dissertation.pdf).
+
 
 See also the [Reactive Data Visualization Talk](), which describes how this project started.
 
